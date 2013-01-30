@@ -1,3 +1,5 @@
 drop-chance: 50
-death-reasons:
-  - 
+death-types:  
+  - PVP
+  - ALL
+debug-enabled: false

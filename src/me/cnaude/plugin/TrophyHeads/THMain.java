@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,19 +25,21 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author cnaude
  */
-public class THMain extends JavaPlugin implements Listener {
-    public static final String PLUGIN_NAME = "TrophyHeads";
-    public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
+public class THMain extends JavaPlugin implements Listener {        
+    public static String LOG_HEADER;
     static final Logger log = Logger.getLogger("Minecraft"); 
     private static Random randomGenerator;
         
     private File pluginFolder;
     private File configFile;
     
-    private static int dropChance = 100;    
+    private static int dropChance = 100;
+    private static ArrayList<String> deathTypes = new ArrayList<String>();
+    private static boolean debugEnabled = false;
     
     @Override
     public void onEnable() {
+        LOG_HEADER = "[" + this.getName() + "]";
         randomGenerator = new Random();
         pluginFolder = getDataFolder();
         configFile = new File(pluginFolder, "config.yml");
@@ -54,32 +55,30 @@ public class THMain extends JavaPlugin implements Listener {
         if (randomGenerator.nextInt(100) > dropChance) {
             return;
         }
-    
-        Player player = event.getEntity();
-        DamageCause dc = player.getLastDamageCause().getCause();
-        Location loc = player.getLocation().clone();
-        World world = loc.getWorld();
-        String pName = player.getName(); 
         
-        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);        
-        ItemMeta itemMeta = item.getItemMeta();
-        ArrayList<String> itemDesc = new ArrayList<String>();
-        itemMeta.setDisplayName("Head of " + pName);
+        Player player = (Player)event.getEntity();
+        DamageCause dc = player.getLastDamageCause().getCause();        
+        logDebug("DamageCause: " + dc.toString());        
         
-        if (dc == DamageCause.ENTITY_ATTACK) {
-            if(event.getEntity().getLastDamageCause().getEntity() instanceof Player){
-                Player pk = (Player)event.getEntity().getKiller();   
-                itemDesc.add("Killed by " + pk.getName());
-            } else {
-                Entity en = event.getEntity().getKiller();
-                itemDesc.add("Killed by " + en.getType().getName());
-            }
-        } else {            
-            itemDesc.add("Killed by " + dc.name());
+        if (deathTypes.contains(dc.toString())
+                || deathTypes.contains("ALL")
+                || (deathTypes.contains("PVP") && player.getKiller() instanceof Player)) {
+            logDebug("Match: true");
+            Location loc = player.getLocation().clone();
+            World world = loc.getWorld();
+            String pName = player.getName(); 
+
+            ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);        
+            ItemMeta itemMeta = item.getItemMeta();
+            ArrayList<String> itemDesc = new ArrayList<String>();
+            itemMeta.setDisplayName("Head of " + pName);
+            itemDesc.add(event.getDeathMessage());
+            itemMeta.setLore(itemDesc);
+            item.setItemMeta(itemMeta);
+            world.dropItemNaturally(loc,item); 
+        } else {
+            logDebug("Match: false");
         }
-        itemMeta.setLore(itemDesc);
-        item.setItemMeta(itemMeta);
-        world.dropItemNaturally(loc,item); 
     }
     
     private void createConfig() {
@@ -87,7 +86,7 @@ public class THMain extends JavaPlugin implements Listener {
             try {
                 pluginFolder.mkdir();
             } catch (Exception e) {
-                logInfo("ERROR: " + e.getMessage());                
+                logError(e.getMessage());                
             }
         }
 
@@ -95,14 +94,20 @@ public class THMain extends JavaPlugin implements Listener {
             try {
                 configFile.createNewFile();
             } catch (Exception e) {
-                logInfo("ERROR: " + e.getMessage());
+                logError(e.getMessage());
             }
         }
     }
         
     private void loadConfig() {
+        debugEnabled = getConfig().getBoolean("debug-enabled");
+        logDebug("Debug enabled");
         dropChance = getConfig().getInt("drop-chance");
-        logInfo("Chance to drop head: " + dropChance + "%");
+        logDebug("Chance to drop head: " + dropChance + "%");
+        for (String type : getConfig().getStringList("death-types")) {
+            deathTypes.add(type);                
+            logDebug("Death type: " + type);
+        }             
     }
             
     public void logInfo(String _message) {
@@ -111,5 +116,11 @@ public class THMain extends JavaPlugin implements Listener {
 
     public void logError(String _message) {
         log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, _message));
+    }
+    
+    public void logDebug(String _message) {
+        if (debugEnabled) {
+            log.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, _message));
+        }
     }
 }
