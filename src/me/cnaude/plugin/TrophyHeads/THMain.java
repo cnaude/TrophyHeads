@@ -15,10 +15,15 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,7 +42,10 @@ public class THMain extends JavaPlugin implements Listener {
     private File pluginFolder;
     private File configFile;
     
-    private static int dropChance = 100;
+    private static int dropChance = 50;
+    private static int zombieDropChance = 0;
+    private static int skeletonDropChance = 0;
+    private static int creeperDropChance = 0;
     private static ArrayList<String> deathTypes = new ArrayList<String>();
     private static boolean debugEnabled = false;
     private static boolean playerSkin = true;
@@ -89,7 +97,7 @@ public class THMain extends JavaPlugin implements Listener {
         }
         return true;
     }
-    
+        
     /*
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {        
@@ -127,12 +135,12 @@ public class THMain extends JavaPlugin implements Listener {
         } else {
             logDebug("Player sneak clicked on an invalid Skull");
         }
-    }
+    }    
     */
     
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {        
-        if (randomGenerator.nextInt(100) > dropChance) {
+        if (randomGenerator.nextInt(100) >= dropChance) {
             return;
         }        
         Player player = (Player)event.getEntity();
@@ -166,6 +174,41 @@ public class THMain extends JavaPlugin implements Listener {
         }
     }
     
+    @EventHandler
+    public void onEntityDeathEvent(EntityDeathEvent event) {
+        EntityType et = event.getEntityType();     
+        Entity e = event.getEntity();
+        int sti;               
+        
+        if (et.equals(EntityType.SKELETON)) {   
+            if (((Skeleton)e).getSkeletonType().equals(SkeletonType.NORMAL)) {
+                if (randomGenerator.nextInt(100) >= skeletonDropChance) {
+                    return;
+                }  
+                sti = 0;
+            } else {
+                return;
+            }
+        } else if (et.equals(EntityType.ZOMBIE)) {
+            if (randomGenerator.nextInt(100) >= zombieDropChance) {
+                return;
+            }  
+            sti = 2;
+        } else if (et.equals(EntityType.CREEPER)) {
+            if (randomGenerator.nextInt(100) >= creeperDropChance) {
+                return;
+            }  
+            sti = 4;        
+        } else {
+            return;
+        }
+        
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte)sti);  
+        Location loc = e.getLocation().clone();
+        World world = loc.getWorld();           
+        world.dropItemNaturally(loc,item); 
+    }
+    
     private void createConfig() {
         if (!pluginFolder.exists()) {
             try {
@@ -197,6 +240,9 @@ public class THMain extends JavaPlugin implements Listener {
         logDebug("Player skins: " + playerSkin);
         sneakPunchInfo = getConfig().getBoolean("sneak-punch-info");
         logDebug("Sneak punch info: " + sneakPunchInfo);
+        zombieDropChance = getConfig().getInt("zombie-heads.drop-chance");
+        skeletonDropChance = getConfig().getInt("zombie-heads.drop-chance");
+        creeperDropChance = getConfig().getInt("zombie-heads.drop-chance");        
     }
             
     public void logInfo(String _message) {

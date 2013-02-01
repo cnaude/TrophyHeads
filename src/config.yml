@@ -5,3 +5,9 @@ death-types:
   - ALL
 debug-enabled: false
 sneak-punch-info: true
+zombie-heads:  
+  drop-chance: 0
+skeleton-heads:
+  drop-chance: 0
+creeper-heads:  
+  drop-chance: 0
