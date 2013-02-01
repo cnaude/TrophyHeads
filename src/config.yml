@@ -1,5 +1,7 @@
+player-skin: true
 drop-chance: 50
 death-types:  
   - PVP
   - ALL
 debug-enabled: false
+sneak-punch-info: true
