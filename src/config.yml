@@ -3,6 +3,9 @@ drop-chance: 50
 death-types:  
   - PVP
   - ALL
+items-required:
+  - ANY
+  - 276
 debug-enabled: false
 sneak-punch-info: true
 zombie-heads:  

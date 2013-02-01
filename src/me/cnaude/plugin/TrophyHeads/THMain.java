@@ -46,6 +46,7 @@ public class THMain extends JavaPlugin implements Listener {
     private static boolean debugEnabled = false;
     private static boolean playerSkin = true;
     private static boolean sneakPunchInfo = true;
+    private static ArrayList<String> itemsRequired = new ArrayList<String>();
     
     @Override
     public void onEnable() {
@@ -135,20 +136,43 @@ public class THMain extends JavaPlugin implements Listener {
     */
     
     @EventHandler
-    public void onPlayerDeathEvent(PlayerDeathEvent event) {        
-        if (randomGenerator.nextInt(100) >= dropChance) {
-            return;
-        }        
+    public void onPlayerDeathEvent(PlayerDeathEvent event) {  
         Player player = (Player)event.getEntity();
         if (!player.hasPermission("trophyheads.drop")) {
             return;
-        }
-        DamageCause dc = player.getLastDamageCause().getCause();        
-        logDebug("DamageCause: " + dc.toString());        
+        }        
+        if (randomGenerator.nextInt(100) >= dropChance) {
+            return;
+        }        
         
-        if (deathTypes.contains(dc.toString())
-                || deathTypes.contains("ALL")
-                || (deathTypes.contains("PVP") && player.getKiller() instanceof Player)) {
+        boolean dropOkay = false;
+        DamageCause dc = player.getLastDamageCause().getCause();        
+        logDebug("DamageCause: " + dc.toString());                
+        
+        if (deathTypes.contains(dc.toString())) {
+            dropOkay = true;
+        }
+        if (deathTypes.contains("ALL")) {
+            dropOkay = true;
+        }
+        
+        if (player.getKiller() instanceof Player) {
+            if (deathTypes.contains("PVP")) {
+                if (itemsRequired.contains("ANY")) {
+                    dropOkay = true;
+                }                 
+                Material mat = player.getKiller().getItemInHand().getType();
+                if (mat != null) {
+                    if (itemsRequired.contains(String.valueOf(mat.getId()))) {
+                        dropOkay = true;
+                    } else if (itemsRequired.contains(mat.toString())) {
+                        dropOkay = true;
+                    }
+                }
+            }
+        }
+         
+        if (dropOkay) {
             logDebug("Match: true");
             Location loc = player.getLocation().clone();
             World world = loc.getWorld();
@@ -226,19 +250,34 @@ public class THMain extends JavaPlugin implements Listener {
     private void loadConfig() {
         debugEnabled = getConfig().getBoolean("debug-enabled");
         logDebug("Debug enabled");
+        
         dropChance = getConfig().getInt("drop-chance");
-        logDebug("Chance to drop head: " + dropChance + "%");
-        for (String type : getConfig().getStringList("death-types")) {
-            deathTypes.add(type);                
-            logDebug("Death type: " + type);
-        }     
+        logDebug("Chance to drop head: " + dropChance + "%");          
+        
         playerSkin = getConfig().getBoolean("player-skin");
         logDebug("Player skins: " + playerSkin);
+        
         sneakPunchInfo = getConfig().getBoolean("sneak-punch-info");
         logDebug("Sneak punch info: " + sneakPunchInfo);
+        
         zombieDropChance = getConfig().getInt("zombie-heads.drop-chance");
+        logDebug("Zombie chance to drop head: " + zombieDropChance + "%");
+        
         skeletonDropChance = getConfig().getInt("zombie-heads.drop-chance");
-        creeperDropChance = getConfig().getInt("zombie-heads.drop-chance");        
+        logDebug("Skeleton chance to drop head: " + skeletonDropChance + "%");
+        
+        creeperDropChance = getConfig().getInt("zombie-heads.drop-chance"); 
+        logDebug("Creeper chance to drop head: " + creeperDropChance + "%");
+        
+        for (String s : getConfig().getStringList("items-required")) {
+            itemsRequired.add(s.toUpperCase());                
+            logDebug("Valid PVP weapon: " + s.toUpperCase());
+        }
+        
+        for (String s : getConfig().getStringList("death-types")) {
+            deathTypes.add(s);                
+            logDebug("Valid death type: " + s);
+        }   
     }
             
     public void logInfo(String _message) {
