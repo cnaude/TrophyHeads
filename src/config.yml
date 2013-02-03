@@ -1,4 +1,6 @@
 player-skin: true
+rename-enabled: false
+rename-item: 339
 drop-chance: 50
 death-types:  
   - PVP
