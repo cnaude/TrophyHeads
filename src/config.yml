@@ -1,18 +1,29 @@
+# Set this to true to automatically assign skin to head. Set to false if you wnat everyone to drop steve heads.
 player-skin: true
+# Set this to true if you want to enable the rename recipe.
 rename-enabled: false
+# Set the item here for the rename recipe. Defaukt is 339 which is paper. Rename the item in an anvil first.
 rename-item: 339
+# The % chance for a player to drop their head. Integer between 0 and 100.
 drop-chance: 50
+# Valid death types for a player to drop head.
 death-types:  
   - PVP
   - ALL
+# Valid item to cause player drop head. (Item in hand of attacker)
 items-required:
   - ANY
   - 276
+# Nothing to see here.
 debug-enabled: false
+# Planned feature.
 sneak-punch-info: true
+# Options for zombies to dorp heads.
 zombie-heads:  
   drop-chance: 0
+# Options for skeletons to drop heads.
 skeleton-heads:
   drop-chance: 0
+# Options for creepers to drop heads.
 creeper-heads:  
   drop-chance: 0
