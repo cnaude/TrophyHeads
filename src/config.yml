@@ -1,4 +1,4 @@
-# Set this to true to automatically assign skin to head. Set to false if you wnat everyone to drop steve heads.
+# Set this to true to automatically assign skin to head. Set to false if you want everyone to drop steve heads.
 player-skin: true
 # Set this to true if you want to enable the rename recipe.
 rename-enabled: false
