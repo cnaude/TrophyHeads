@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -18,10 +19,12 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -111,8 +114,8 @@ public class THMain extends JavaPlugin implements Listener {
     @EventHandler
     public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
         if (!renameEnabled) {
-            return;            
-        }        
+            return;
+        }
         if (event.getRecipe() instanceof Recipe) {
             CraftingInventory ci = event.getInventory();
             ItemStack result = ci.getResult();
@@ -142,45 +145,34 @@ public class THMain extends JavaPlugin implements Listener {
         }
     }
 
-    /*
-     @EventHandler
-     public void onPlayerInteractEvent(PlayerInteractEvent event) {        
-     if (!sneakPunchInfo) {            
-     return;
-     }
-     Player player = event.getPlayer();
-     if (!player.isSneaking()) {            
-     return;
-     }
-     Block block = player.getTargetBlock(null, 5);
-     if (block == null) {
-     block = event.getClickedBlock();
-     }        
-     if (block.getType() == Material.SKULL) {
-     logDebug("Player sneak clicked on a valid Skull");
-     Skull skull = (Skull)block;
-     String pName = "Unknown";            
-     try {
-     logDebug("About to check for owner!");
-     if (skull.hasOwner()) {
-     logDebug("Skull block has owner");
-     pName = skull.getOwner();
-     } else {
-     logDebug("Skull block has NO owner");
-     }
-     player.sendMessage(ChatColor.YELLOW + "This head once belonged to " + ChatColor.RED + pName);
-     }
-     catch (Exception e) {
-     logError(e.getMessage());
-     }
-     finally {
-     logDebug("Finally!");
-     }
-     } else {
-     logDebug("Player sneak clicked on an invalid Skull");
-     }
-     }    
-     */
+    @EventHandler
+    public void onPlayerInteractEvent(PlayerInteractEvent event) {
+        if (!sneakPunchInfo) {
+            return;
+        }
+        Player player = event.getPlayer();
+        if (!player.isSneaking()) {
+            return;
+        }
+        if (!player.hasPermission("trophyheads.info")) {
+            return;
+        }
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+            org.bukkit.block.Block block = event.getClickedBlock();                            
+            if (block.getType() == Material.SKULL) {                
+                BlockState bs = block.getState();
+                org.bukkit.block.Skull skull = (org.bukkit.block.Skull) bs;            
+                String pName;            
+                if (skull.hasOwner()) {
+                    pName = skull.getOwner();
+                } else {
+                    pName = "Unknown";
+                }
+                player.sendMessage(ChatColor.YELLOW + "This head once belonged to " + ChatColor.RED + pName);
+            }
+        }
+    }
+
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = (Player) event.getEntity();

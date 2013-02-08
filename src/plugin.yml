@@ -1,5 +1,5 @@
 name: TrophyHeads
-version: 1.6.0
+version: 1.7.0
 description: Randomly drop player heads as trophies
 author: cnaude
 main: me.cnaude.plugin.TrophyHeads.THMain
@@ -14,3 +14,6 @@ permissions:
   'trophyheads.drop':
     description: Allows players to randomly drop heads at death.
     default: true
+  'trophyheads.info':
+    description: Allows players to punch a skull to see who the owner was.
+    default: true    

@@ -14,9 +14,7 @@ death-types:
 items-required:
   - ANY
   - 276
-# Nothing to see here.
-debug-enabled: false
-# Planned feature.
+# Sneak punch a skull to see who it belonged to.
 sneak-punch-info: true
 # Options for zombies to dorp heads.
 zombie-heads:  
@@ -27,3 +25,5 @@ skeleton-heads:
 # Options for creepers to drop heads.
 creeper-heads:  
   drop-chance: 0
+# Nothing to see here.
+debug-enabled: false  
