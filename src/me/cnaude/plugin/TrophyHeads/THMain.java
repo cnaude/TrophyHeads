@@ -117,8 +117,11 @@ public class THMain extends JavaPlugin implements Listener {
             return;
         }
         if (event.getRecipe() instanceof Recipe) {
-            CraftingInventory ci = event.getInventory();
+            CraftingInventory ci = event.getInventory();            
             ItemStack result = ci.getResult();
+            if (result == null) {
+                return;
+            }
             if (result.getType().equals(Material.SKULL_ITEM)) {
                 for (ItemStack i : ci.getContents()) {
                     if (i.getType().equals(Material.SKULL_ITEM)) {
