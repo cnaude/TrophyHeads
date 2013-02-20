@@ -19,11 +19,20 @@ sneak-punch-info: true
 # Options for zombies to dorp heads.
 zombie-heads:  
   drop-chance: 0
+  items-required:
+  - ANY
+  - 276
 # Options for skeletons to drop heads.
 skeleton-heads:
   drop-chance: 0
+  items-required:
+  - ANY
+  - 276
 # Options for creepers to drop heads.
 creeper-heads:  
   drop-chance: 0
+  items-required:
+  - ANY
+  - 276
 # Nothing to see here.
 debug-enabled: false  

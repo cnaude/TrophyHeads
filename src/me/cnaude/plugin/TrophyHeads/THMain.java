@@ -2,18 +2,22 @@ package me.cnaude.plugin.TrophyHeads;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
@@ -44,16 +48,13 @@ public class THMain extends JavaPlugin implements Listener {
     private static Random randomGenerator;
     private File pluginFolder;
     private File configFile;
-    private static int dropChance = 50;
-    private static int zombieDropChance = 0;
-    private static int skeletonDropChance = 0;
-    private static int creeperDropChance = 0;
     private static ArrayList<String> deathTypes = new ArrayList<String>();
     private static boolean debugEnabled = false;
     private static boolean renameEnabled = false;
     private static boolean playerSkin = true;
     private static boolean sneakPunchInfo = true;
-    private static ArrayList<String> itemsRequired = new ArrayList<String>();
+    private static EnumMap<EntityType, List<String>> itemsRequired = new EnumMap<EntityType,List<String>>(EntityType.class);
+    private static EnumMap<EntityType, Integer> dropChances = new EnumMap<EntityType, Integer>(EntityType.class);
     private static Material renameItem = Material.PAPER;
 
     @Override
@@ -68,7 +69,7 @@ public class THMain extends JavaPlugin implements Listener {
         loadConfig();
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("headspawn").setExecutor(this);
-
+        
         if (renameEnabled) {
             ItemStack resultHead = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ShapelessRecipe shapelessRecipe = new ShapelessRecipe(resultHead);
@@ -147,7 +148,7 @@ public class THMain extends JavaPlugin implements Listener {
             }
         }
     }
-
+    
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         if (!sneakPunchInfo) {
@@ -162,18 +163,47 @@ public class THMain extends JavaPlugin implements Listener {
         }
         if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             org.bukkit.block.Block block = event.getClickedBlock();                            
-            if (block.getType() == Material.SKULL) {                
+            if (block.getType() == Material.SKULL) {
                 BlockState bs = block.getState();
                 org.bukkit.block.Skull skull = (org.bukkit.block.Skull) bs;            
-                String pName;            
-                if (skull.hasOwner()) {
-                    pName = skull.getOwner();
-                } else {
-                    pName = "Unknown";
+                String pName = "Unknown";
+                if (skull.getSkullType().equals(SkullType.PLAYER)) {
+                    if (skull.hasOwner()) {
+                        pName = skull.getOwner();
+                    } 
+                } else if (skull.getSkullType().equals(SkullType.CREEPER)) {
+                    pName = "Creeper";
+                } else if (skull.getSkullType().equals(SkullType.ZOMBIE)) {
+                    pName = "Zombie";
+                } else if (skull.getSkullType().equals(SkullType.SKELETON)) {
+                    pName = "Skeleton";
+                } else if (skull.getSkullType().equals(SkullType.WITHER)) {
+                    pName = "Wither Skeleton";
                 }
                 player.sendMessage(ChatColor.YELLOW + "This head once belonged to " + ChatColor.RED + pName);
             }
         }
+    }
+    
+    public boolean isValidItem(EntityType et, Material mat) {
+        if (et == null || mat == null) {
+            return false;
+        }
+        if (itemsRequired.containsKey(et)) {
+            if (itemsRequired.get(et).contains("ANY")) {                
+                return true;
+            }                                
+            if (itemsRequired.get(et).contains(String.valueOf(mat.getId()))) {
+                return true;
+            } else {
+                for (String s : itemsRequired.get(et)) {
+                    if (s.toUpperCase().equals(mat.toString())) {
+                        return true;
+                    }
+                }
+            }            
+        }
+        return false;
     }
 
     @EventHandler
@@ -182,7 +212,7 @@ public class THMain extends JavaPlugin implements Listener {
         if (!player.hasPermission("trophyheads.drop")) {
             return;
         }
-        if (randomGenerator.nextInt(100) >= dropChance) {
+        if (randomGenerator.nextInt(100) >= dropChances.get(EntityType.PLAYER)) {
             return;
         }
 
@@ -199,17 +229,7 @@ public class THMain extends JavaPlugin implements Listener {
 
         if (player.getKiller() instanceof Player) {
             if (deathTypes.contains("PVP")) {
-                if (itemsRequired.contains("ANY")) {
-                    dropOkay = true;
-                }
-                Material mat = player.getKiller().getItemInHand().getType();
-                if (mat != null) {
-                    if (itemsRequired.contains(String.valueOf(mat.getId()))) {
-                        dropOkay = true;
-                    } else if (itemsRequired.contains(mat.toString())) {
-                        dropOkay = true;
-                    }
-                }
+                dropOkay = isValidItem(EntityType.PLAYER, player.getKiller().getItemInHand().getType());
             }
         }
 
@@ -236,31 +256,45 @@ public class THMain extends JavaPlugin implements Listener {
     }
 
     @EventHandler
-    public void onEntityDeathEvent(EntityDeathEvent event) {
-        EntityType et = event.getEntityType();
+    public void onEntityDeathEvent(EntityDeathEvent event) {        
+        EntityType et = event.getEntityType();        
         Entity e = event.getEntity();
         int sti;
-
+        boolean dropOkay;
+        
+        Player player;
+        Material mat = Material.AIR;
+        if (((LivingEntity)e).getKiller() instanceof Player) { 
+            player = (Player)((LivingEntity)e).getKiller();
+            mat = player.getItemInHand().getType();
+        }
+                    
+        dropOkay = isValidItem(et,mat);
+                
         if (et.equals(EntityType.SKELETON)) {
             if (((Skeleton) e).getSkeletonType().equals(SkeletonType.NORMAL)) {
-                if (randomGenerator.nextInt(100) >= skeletonDropChance) {
+                if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
                     return;
-                }
+                }                
                 sti = 0;
             } else {
                 return;
             }
         } else if (et.equals(EntityType.ZOMBIE)) {
-            if (randomGenerator.nextInt(100) >= zombieDropChance) {
+            if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
                 return;
             }
             sti = 2;
         } else if (et.equals(EntityType.CREEPER)) {
-            if (randomGenerator.nextInt(100) >= creeperDropChance) {
+            if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
                 return;
             }
             sti = 4;
         } else {
+            return;
+        }
+        
+        if (!dropOkay) {
             return;
         }
 
@@ -292,8 +326,8 @@ public class THMain extends JavaPlugin implements Listener {
         debugEnabled = getConfig().getBoolean("debug-enabled");
         logDebug("Debug enabled");
 
-        dropChance = getConfig().getInt("drop-chance");
-        logDebug("Chance to drop head: " + dropChance + "%");
+        dropChances.put(EntityType.PLAYER,getConfig().getInt("drop-chance"));
+        logDebug("Chance to drop head: " + dropChances.get(EntityType.PLAYER) + "%");
 
         playerSkin = getConfig().getBoolean("player-skin");
         logDebug("Player skins: " + playerSkin);
@@ -301,14 +335,14 @@ public class THMain extends JavaPlugin implements Listener {
         sneakPunchInfo = getConfig().getBoolean("sneak-punch-info");
         logDebug("Sneak punch info: " + sneakPunchInfo);
 
-        zombieDropChance = getConfig().getInt("zombie-heads.drop-chance");
-        logDebug("Zombie chance to drop head: " + zombieDropChance + "%");
+        dropChances.put(EntityType.ZOMBIE,getConfig().getInt("zombie-heads.drop-chance"));
+        logDebug("Zombie chance to drop head: " + dropChances.get(EntityType.ZOMBIE) + "%");
 
-        skeletonDropChance = getConfig().getInt("zombie-heads.drop-chance");
-        logDebug("Skeleton chance to drop head: " + skeletonDropChance + "%");
+        dropChances.put(EntityType.SKELETON,getConfig().getInt("skeleton-heads.drop-chance"));
+        logDebug("Skeleton chance to drop head: " + dropChances.get(EntityType.SKELETON) + "%");
 
-        creeperDropChance = getConfig().getInt("zombie-heads.drop-chance");
-        logDebug("Creeper chance to drop head: " + creeperDropChance + "%");
+        dropChances.put(EntityType.CREEPER,getConfig().getInt("creeper-heads.drop-chance"));
+        logDebug("Creeper chance to drop head: " + dropChances.get(EntityType.CREEPER) + "%");
 
         renameEnabled = getConfig().getBoolean("rename-enabled");
         if (renameEnabled) {
@@ -319,16 +353,14 @@ public class THMain extends JavaPlugin implements Listener {
             }
             logDebug("Rename recipe enabled: head + " + renameItem.toString());
         }
+        
+        itemsRequired.put(EntityType.PLAYER, getConfig().getStringList("items-required"));
+        itemsRequired.put(EntityType.ZOMBIE, getConfig().getStringList("zombie-heads.items-required"));
+        itemsRequired.put(EntityType.CREEPER, getConfig().getStringList("creeper-heads.items-required"));
+        itemsRequired.put(EntityType.SKELETON, getConfig().getStringList("skeleton-heads.items-required"));
 
-        for (String s : getConfig().getStringList("items-required")) {
-            itemsRequired.add(s.toUpperCase());
-            logDebug("Valid PVP weapon: " + s.toUpperCase());
-        }
+        deathTypes.addAll(getConfig().getStringList("death-types"));
 
-        for (String s : getConfig().getStringList("death-types")) {
-            deathTypes.add(s);
-            logDebug("Valid death type: " + s);
-        }
     }
 
     public void logInfo(String _message) {
