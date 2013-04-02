@@ -16,23 +16,54 @@ items-required:
   - 276
 # Sneak punch a skull to see who it belonged to.
 sneak-punch-info: true
-# Options for zombies to dorp heads.
+message: '&eThis head once belonged to &c%%NAME%%&e.'
+# Options for zombies to drop heads.
 zombie-heads:  
   drop-chance: 0
   items-required:
   - ANY
   - 276
+  message: '&eThis head once belonged to a hungry &cZombie&e.'
 # Options for skeletons to drop heads.
 skeleton-heads:
   drop-chance: 0
   items-required:
   - ANY
   - 276
+  message: '&eThis head once belonged to a &cSkeleton&e.'
 # Options for creepers to drop heads.
 creeper-heads:  
   drop-chance: 0
   items-required:
   - ANY
   - 276
+  message: '&eThis head once belonged to an angry &cCreeper&e.'
 # Nothing to see here.
 debug-enabled: false  
+# Custom skulls
+# Options for spiders to drop heads.
+spider-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: Kelevra_V
+  message: '&eThis head once belonged to a hairy &cSpider&e.'
+  # Options for endermen to drop heads.
+enderman-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: Violit
+  message: '&eThis head once belonged to a confused &cEnderman&e.'
+  # Options for blazes to drop heads. 
+blaze-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: Blaze_Head
+  message: '&eThis head once belonged to a fiery &cBlaze&e.'
+wither-heads:  
+  message: '&eThis head once belonged to a withered &cWither&e.'
