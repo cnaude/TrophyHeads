@@ -67,3 +67,11 @@ blaze-heads:
   message: '&eThis head once belonged to a fiery &cBlaze&e.'
 wither-heads:  
   message: '&eThis head once belonged to a withered &cWither&e.'
+  # Options for blazes to drop heads. 
+pigzombie-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: ManBearPigZombie
+  message: '&eThis head once belonged to a &cPig Zombie&e.'  

@@ -372,6 +372,11 @@ public class THMain extends JavaPlugin implements Listener {
                 return;
             }
             sti = 3;
+        } else if (et.equals(EntityType.PIG_ZOMBIE)) {
+            if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
+                return;
+            }
+            sti = 3;
         } else {
             return;
         }
@@ -435,13 +440,16 @@ public class THMain extends JavaPlugin implements Listener {
         logDebug("Creeper chance to drop head: " + dropChances.get(EntityType.CREEPER) + "%");
 
         dropChances.put(EntityType.SPIDER,getConfig().getInt("spider-heads.drop-chance"));
-        logDebug("Creeper chance to drop head: " + dropChances.get(EntityType.CREEPER) + "%");
+        logDebug("Spider chance to drop head: " + dropChances.get(EntityType.SPIDER) + "%");
         
         dropChances.put(EntityType.ENDERMAN,getConfig().getInt("enderman-heads.drop-chance"));
-        logDebug("Creeper chance to drop head: " + dropChances.get(EntityType.CREEPER) + "%");
+        logDebug("Enderman chance to drop head: " + dropChances.get(EntityType.ENDERMAN) + "%");
         
         dropChances.put(EntityType.BLAZE,getConfig().getInt("blaze-heads.drop-chance"));
-        logDebug("Creeper chance to drop head: " + dropChances.get(EntityType.CREEPER) + "%");
+        logDebug("Blaze chance to drop head: " + dropChances.get(EntityType.BLAZE) + "%");
+        
+        dropChances.put(EntityType.PIG_ZOMBIE,getConfig().getInt("pigzombie-heads.drop-chance"));
+        logDebug("PigZombie chance to drop head: " + dropChances.get(EntityType.PIG_ZOMBIE) + "%");
         
         skullMessages.put(EntityType.PLAYER, getConfig().getString("message"));        
         
@@ -455,6 +463,7 @@ public class THMain extends JavaPlugin implements Listener {
             logDebug("Rename recipe enabled: head + " + renameItem.toString());
         }
         
+        // Items required
         itemsRequired.put(EntityType.PLAYER, getConfig().getStringList("items-required"));
         itemsRequired.put(EntityType.ZOMBIE, getConfig().getStringList("zombie-heads.items-required"));
         itemsRequired.put(EntityType.CREEPER, getConfig().getStringList("creeper-heads.items-required"));
@@ -463,11 +472,15 @@ public class THMain extends JavaPlugin implements Listener {
         itemsRequired.put(EntityType.SPIDER, getConfig().getStringList("spider-heads.items-required"));
         itemsRequired.put(EntityType.ENDERMAN, getConfig().getStringList("enderman-heads.items-required"));
         itemsRequired.put(EntityType.BLAZE, getConfig().getStringList("blaze-heads.items-required"));
+        itemsRequired.put(EntityType.PIG_ZOMBIE, getConfig().getStringList("pigzombie-heads.items-required"));
         
+        // Custom skins
         customSkins.put(EntityType.SPIDER, getConfig().getString("spider-heads.skin"));
         customSkins.put(EntityType.ENDERMAN, getConfig().getString("enderman-heads.skin"));
         customSkins.put(EntityType.BLAZE, getConfig().getString("blaze-heads.skin"));
-                
+        customSkins.put(EntityType.PIG_ZOMBIE, getConfig().getString("pigzombie-heads.skin"));
+              
+        // Custom messages
         skullMessages.put(EntityType.ZOMBIE, getConfig().getString("zombie-heads.message"));
         skullMessages.put(EntityType.CREEPER, getConfig().getString("creeper-heads.message"));
         skullMessages.put(EntityType.SKELETON, getConfig().getString("skeleton-heads.message"));
@@ -475,6 +488,7 @@ public class THMain extends JavaPlugin implements Listener {
         skullMessages.put(EntityType.SPIDER, getConfig().getString("spider-heads.message"));
         skullMessages.put(EntityType.ENDERMAN, getConfig().getString("enderman-heads.message"));
         skullMessages.put(EntityType.BLAZE, getConfig().getString("blaze-heads.message"));
+        skullMessages.put(EntityType.PIG_ZOMBIE, getConfig().getString("pigzombie-heads.message"));
         
         skullMessages.put(EntityType.WITHER, getConfig().getString("wither-heads.message"));                
 
