@@ -74,4 +74,25 @@ pigzombie-heads:
   - ANY
   - 276
   skin: ManBearPigZombie
-  message: '&eThis head once belonged to a &cPig Zombie&e.'  
+  message: '&eThis head once belonged to a &dPig Zombie&e.'
+villager-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: Villager
+  message: '&eThis head once belonged to a &2Villager&e.'
+squid-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: squidette8
+  message: '&eThis head once belonged to a &7Squid&e.'
+slime-heads:  
+  drop-chance: 0
+  items-required:
+  - ANY
+  - 276
+  skin: HappyHappyMan
+  message: '&eThis head once belonged to a &aSlime&e.'

@@ -377,6 +377,21 @@ public class THMain extends JavaPlugin implements Listener {
                 return;
             }
             sti = 3;
+        } else if (et.equals(EntityType.VILLAGER)) {
+            if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
+                return;
+            }
+            sti = 3;
+        } else if (et.equals(EntityType.SQUID)) {
+            if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
+                return;
+            }
+            sti = 3;
+        } else if (et.equals(EntityType.SLIME)) {
+            if (randomGenerator.nextInt(100) >= dropChances.get(et)) {
+                return;
+            }
+            sti = 3;
         } else {
             return;
         }
@@ -450,6 +465,15 @@ public class THMain extends JavaPlugin implements Listener {
         
         dropChances.put(EntityType.PIG_ZOMBIE,getConfig().getInt("pigzombie-heads.drop-chance"));
         logDebug("PigZombie chance to drop head: " + dropChances.get(EntityType.PIG_ZOMBIE) + "%");
+
+        dropChances.put(EntityType.VILLAGER,getConfig().getInt("villager-heads.drop-chance"));
+        logDebug("Villager chance to drop head: " + dropChances.get(EntityType.VILLAGER) + "%");
+        
+        dropChances.put(EntityType.SQUID,getConfig().getInt("squid-heads.drop-chance"));
+        logDebug("Squid chance to drop head: " + dropChances.get(EntityType.SQUID) + "%");
+        
+        dropChances.put(EntityType.SLIME,getConfig().getInt("slime-heads.drop-chance"));
+        logDebug("Slime chance to drop head: " + dropChances.get(EntityType.SLIME) + "%");
         
         skullMessages.put(EntityType.PLAYER, getConfig().getString("message"));        
         
@@ -473,12 +497,18 @@ public class THMain extends JavaPlugin implements Listener {
         itemsRequired.put(EntityType.ENDERMAN, getConfig().getStringList("enderman-heads.items-required"));
         itemsRequired.put(EntityType.BLAZE, getConfig().getStringList("blaze-heads.items-required"));
         itemsRequired.put(EntityType.PIG_ZOMBIE, getConfig().getStringList("pigzombie-heads.items-required"));
+        itemsRequired.put(EntityType.VILLAGER, getConfig().getStringList("villager-heads.items-required"));
+        itemsRequired.put(EntityType.SQUID, getConfig().getStringList("squid-heads.items-required"));
+        itemsRequired.put(EntityType.SLIME, getConfig().getStringList("slime-heads.items-required"));
         
         // Custom skins
         customSkins.put(EntityType.SPIDER, getConfig().getString("spider-heads.skin"));
         customSkins.put(EntityType.ENDERMAN, getConfig().getString("enderman-heads.skin"));
         customSkins.put(EntityType.BLAZE, getConfig().getString("blaze-heads.skin"));
         customSkins.put(EntityType.PIG_ZOMBIE, getConfig().getString("pigzombie-heads.skin"));
+        customSkins.put(EntityType.VILLAGER, getConfig().getString("villager-heads.skin"));
+        customSkins.put(EntityType.SQUID, getConfig().getString("squid-heads.skin"));
+        customSkins.put(EntityType.SLIME, getConfig().getString("slime-heads.skin"));
               
         // Custom messages
         skullMessages.put(EntityType.ZOMBIE, getConfig().getString("zombie-heads.message"));
@@ -489,6 +519,9 @@ public class THMain extends JavaPlugin implements Listener {
         skullMessages.put(EntityType.ENDERMAN, getConfig().getString("enderman-heads.message"));
         skullMessages.put(EntityType.BLAZE, getConfig().getString("blaze-heads.message"));
         skullMessages.put(EntityType.PIG_ZOMBIE, getConfig().getString("pigzombie-heads.message"));
+        skullMessages.put(EntityType.VILLAGER, getConfig().getString("villager-heads.message"));
+        skullMessages.put(EntityType.SQUID, getConfig().getString("squid-heads.message"));
+        skullMessages.put(EntityType.SLIME, getConfig().getString("slime-heads.message"));
         
         skullMessages.put(EntityType.WITHER, getConfig().getString("wither-heads.message"));                
 
