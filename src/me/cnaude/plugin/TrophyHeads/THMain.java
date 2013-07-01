@@ -242,8 +242,15 @@ public class THMain extends JavaPlugin implements Listener {
         }
 
         boolean dropOkay = false;
-        DamageCause dc = player.getLastDamageCause().getCause();
-        logDebug("DamageCause: " + dc.toString());
+        DamageCause dc;
+        if (player.getLastDamageCause() != null) {
+            dc = player.getLastDamageCause().getCause();
+            logDebug("DamageCause: " + dc.toString());
+        } else {
+            logDebug("DamageCause: NULL");
+            return;
+        }
+        
 
         if (deathTypes.contains(dc.toString())) {
             dropOkay = true;
