@@ -1,11 +1,12 @@
 name: TrophyHeads
-version: 1.12.0
+version: 1.12.1
 description: Randomly drop player heads as trophies
 author: cnaude
 main: me.cnaude.plugin.TrophyHeads.THMain
 commands:
     headspawn:
         description: Spawn the head of a player
+        aliases: [head]
         usage: /headspawn [name] ([count])
 permissions:
   'trophyheads.spawn':

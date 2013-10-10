@@ -104,7 +104,16 @@ public class THMain extends JavaPlugin implements Listener {
                 ItemMeta itemMeta = item.getItemMeta();
                 ((SkullMeta) itemMeta).setOwner(pName);
                 item.setItemMeta(itemMeta);
-                world.dropItemNaturally(loc, item);
+                if (player.getInventory().firstEmpty() > -1) {
+                    player.sendMessage("Placed " + ChatColor.GOLD 
+                            + pName + "'s head " + ChatColor.RESET + " in your inventory.");
+                    player.getInventory().setItem(player.getInventory().firstEmpty(), item);
+                } else {
+                    player.sendMessage("Dropped " + ChatColor.GOLD 
+                            + pName + "'s head" + ChatColor.RESET 
+                            + " on the ground because your inventory was full.");
+                    world.dropItemNaturally(loc, item);
+                }
 
             } else {
                 player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
