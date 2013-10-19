@@ -55,6 +55,7 @@ public class THMain extends JavaPlugin implements Listener {
     private static boolean renameEnabled = false;
     private static boolean playerSkin = true;
     private static boolean sneakPunchInfo = true;
+    private static boolean noBreak = true;
     private static EnumMap<EntityType, List<String>> itemsRequired = new EnumMap<EntityType, List<String>>(EntityType.class);
     private static EnumMap<EntityType, Integer> dropChances = new EnumMap<EntityType, Integer>(EntityType.class);
     private static EnumMap<EntityType, String> customSkins = new EnumMap<EntityType, String>(EntityType.class);
@@ -215,6 +216,7 @@ public class THMain extends JavaPlugin implements Listener {
                 message = message.replaceAll("%%NAME%%", pName);
                 message = ChatColor.translateAlternateColorCodes('&', message);
                 player.sendMessage(message);
+                event.setCancelled(noBreak);
             }
         }
     }
@@ -434,6 +436,9 @@ public class THMain extends JavaPlugin implements Listener {
 
         sneakPunchInfo = getConfig().getBoolean("sneak-punch-info");
         logDebug("Sneak punch info: " + sneakPunchInfo);
+        
+        noBreak = getConfig().getBoolean("sneak-punch-no-break");
+        logDebug("Sneak punch no break: " + noBreak);
 
         for (String entityName : getConfig().getConfigurationSection("custom-heads").getKeys(false)) {
             logDebug("Entity Name: " + entityName);

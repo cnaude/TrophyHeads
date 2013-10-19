@@ -16,6 +16,8 @@ items-required:
   - 276
 # Sneak punch a skull to see who it belonged to.
 sneak-punch-info: true
+# Don't break heads when sneaki punching
+sneak-punch-no-break: true
 message: '&eThis head once belonged to &c%%NAME%%&e.'
 # Nothing to see here.
 debug-enabled: false  
