@@ -6,7 +6,8 @@ rename-enabled: false
 rename-item: 339
 # The % chance for a player to drop their head. Integer between 0 and 100.
 drop-chance: 50
-# Valid death types for a player to drop head.
+# Valid death types for a player to drop head. 
+# See: http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html#enum_constant_summary
 death-types:  
   - PVP
   - ALL

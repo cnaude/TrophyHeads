@@ -1,6 +1,7 @@
 package me.cnaude.plugin.TrophyHeads;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -50,16 +51,16 @@ public class THMain extends JavaPlugin implements Listener {
     private static Random randomGenerator;
     private File pluginFolder;
     private File configFile;
-    private static ArrayList<String> deathTypes = new ArrayList<String>();
+    private static final ArrayList<String> deathTypes = new ArrayList<String>();
     private static boolean debugEnabled = false;
     private static boolean renameEnabled = false;
     private static boolean playerSkin = true;
     private static boolean sneakPunchInfo = true;
     private static boolean noBreak = true;
-    private static EnumMap<EntityType, List<String>> itemsRequired = new EnumMap<EntityType, List<String>>(EntityType.class);
-    private static EnumMap<EntityType, Integer> dropChances = new EnumMap<EntityType, Integer>(EntityType.class);
-    private static EnumMap<EntityType, String> customSkins = new EnumMap<EntityType, String>(EntityType.class);
-    private static EnumMap<EntityType, String> skullMessages = new EnumMap<EntityType, String>(EntityType.class);
+    private static final EnumMap<EntityType, List<String>> itemsRequired = new EnumMap<EntityType, List<String>>(EntityType.class);
+    private static final EnumMap<EntityType, Integer> dropChances = new EnumMap<EntityType, Integer>(EntityType.class);
+    private static final EnumMap<EntityType, String> customSkins = new EnumMap<EntityType, String>(EntityType.class);
+    private static final EnumMap<EntityType, String> skullMessages = new EnumMap<EntityType, String>(EntityType.class);
     private static Material renameItem = Material.PAPER;
 
     @Override
@@ -418,7 +419,7 @@ public class THMain extends JavaPlugin implements Listener {
         if (!configFile.exists()) {
             try {
                 configFile.createNewFile();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 logError(e.getMessage());
             }
         }
