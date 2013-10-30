@@ -1,5 +1,5 @@
 name: TrophyHeads
-version: 1.12.2
+version: 1.12.3
 description: Randomly drop player heads as trophies
 author: cnaude
 main: me.cnaude.plugin.TrophyHeads.THMain

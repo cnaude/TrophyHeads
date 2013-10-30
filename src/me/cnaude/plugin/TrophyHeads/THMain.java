@@ -107,12 +107,12 @@ public class THMain extends JavaPlugin implements Listener {
                 ((SkullMeta) itemMeta).setOwner(pName);
                 item.setItemMeta(itemMeta);
                 if (player.getInventory().firstEmpty() > -1) {
-                    player.sendMessage("Placed " + ChatColor.GOLD 
+                    player.sendMessage("Placed " + ChatColor.GOLD
                             + pName + "'s head " + ChatColor.RESET + " in your inventory.");
                     player.getInventory().setItem(player.getInventory().firstEmpty(), item);
                 } else {
-                    player.sendMessage("Dropped " + ChatColor.GOLD 
-                            + pName + "'s head" + ChatColor.RESET 
+                    player.sendMessage("Dropped " + ChatColor.GOLD
+                            + pName + "'s head" + ChatColor.RESET
                             + " on the ground because your inventory was full.");
                     world.dropItemNaturally(loc, item);
                 }
@@ -271,8 +271,12 @@ public class THMain extends JavaPlugin implements Listener {
         }
 
         if (player.getKiller() instanceof Player) {
+            logDebug("Player " + player.getName() + " killed by another player. Checking if PVP is valid death type.");
             if (deathTypes.contains("PVP")) {
                 dropOkay = isValidItem(EntityType.PLAYER, player.getKiller().getItemInHand().getType());
+                logDebug("PVP is a valid death type. Killer's item in hand is valid? " + dropOkay);
+            } else {
+                logDebug("PVP is not a valid death type.");
             }
         }
 
@@ -437,9 +441,18 @@ public class THMain extends JavaPlugin implements Listener {
 
         sneakPunchInfo = getConfig().getBoolean("sneak-punch-info");
         logDebug("Sneak punch info: " + sneakPunchInfo);
-        
+
         noBreak = getConfig().getBoolean("sneak-punch-no-break");
         logDebug("Sneak punch no break: " + noBreak);
+
+        List<String> pItems = getConfig().getStringList("items-required");
+        if (pItems.isEmpty()) {
+            pItems.add("ANY");
+            pItems.add("276");
+        }
+
+        itemsRequired.put(EntityType.PLAYER, pItems);
+        logDebug("Player items required: " + itemsRequired.get(EntityType.PLAYER));
 
         for (String entityName : getConfig().getConfigurationSection("custom-heads").getKeys(false)) {
             logDebug("Entity Name: " + entityName);

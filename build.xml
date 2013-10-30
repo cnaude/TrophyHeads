@@ -75,7 +75,7 @@
       <echo>Copying to DropBox</echo>
       <copy file="${dist.jar}" tofile="C:/Users/cnaude/Dropbox/Public/${dist.jar}"/>      
       <exec dir="dist" executable="c:\Users\cnaude\Apps\pscp.exe">
-        <arg line="TrophyHeads.jar cn.revisited.us:minetest/plugins/"/>
+        <arg line="-batch -i c:/Users/cnaude/Dropbox/ssh/id_rsa.ppk TrophyHeads.jar cn.revisited.us:minetest/plugins/"/>
     </exec>
     </target>
 </project>
