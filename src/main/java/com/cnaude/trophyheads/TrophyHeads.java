@@ -1,4 +1,4 @@
-package me.cnaude.plugin.TrophyHeads;
+package com.cnaude.trophyheads;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +44,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author cnaude
  */
-public class THMain extends JavaPlugin implements Listener {
+public class TrophyHeads extends JavaPlugin implements Listener {
 
     public static String LOG_HEADER;
     static final Logger log = Logger.getLogger("Minecraft");
@@ -347,6 +347,9 @@ public class THMain extends JavaPlugin implements Listener {
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent event) {
         EntityType et = event.getEntityType();
+        if (et.equals(EntityType.PLAYER)) {
+            return;
+        }
         Entity e = event.getEntity();
         int sti;
         boolean dropOkay;
