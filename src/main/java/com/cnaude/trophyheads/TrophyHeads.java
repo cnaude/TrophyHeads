@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -302,11 +303,13 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (event.isCancelled()) {
+            logDebug("TH: Block break cancel detected.");
             return;
         }
+        logDebug("TH: No cancel detected.");
         org.bukkit.block.Block block = event.getBlock();
         if (event.getPlayer() instanceof Player) {
             if (event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {

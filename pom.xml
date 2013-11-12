@@ -5,7 +5,7 @@
 
     <groupId>com.cnaude</groupId>
     <artifactId>TrophyHeads</artifactId>
-    <version>1.12.4</version>
+    <version>1.12.6</version>
     <name>TrophyHeads</name>
     <description>Drop player and mob heads!</description> 
     <url>http://dev.bukkit.org/server-mods/trophyheads/</url>
@@ -117,9 +117,15 @@
                         <configuration>
                             <tasks>                                                                                             
                                 <copy file="../${project.name}/target/${project.name}-${project.version}.jar" tofile="../${project.name}/target/${project.name}.jar"/>
+                                <copy file="../${project.name}/target/${project.name}.jar" tofile="../../../../Dropbox/Public/dist/${project.name}.jar"/>                                
                                 <exec dir="../${project.name}/target" executable="${scp}">
                                     <arg line="${arg} ${project.name}.jar cnaude@cn.revisited.us:minetest/plugins/"/>
-                                </exec>                                  
+                                </exec>  
+                                <!--
+                                <exec dir="../${project.name}/target" executable="scp">
+                                    <arg line="${project.name}.jar cnaude@cn.revisited.us:minetest/plugins/"/>
+                                </exec>  
+                                -->                              
                             </tasks>
                         </configuration>
                         <goals>
