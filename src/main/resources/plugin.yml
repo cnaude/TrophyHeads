@@ -8,6 +8,10 @@ commands:
         description: Spawn the head of a player
         aliases: [head]
         usage: /headspawn [name] ([count])
+    trophyreload:
+        description: Reload configuration
+        aliases: [threload,thr]
+        usage: /reophyreload
 permissions:
   'trophyheads.spawn':
     description: Gives player access to the /headspawn command.
@@ -18,3 +22,6 @@ permissions:
   'trophyheads.info':
     description: Allows players to punch a skull to see who the owner was.
     default: true
+  'trophyheads.reload':
+    description: Allows players to reload configuration.
+    default: op

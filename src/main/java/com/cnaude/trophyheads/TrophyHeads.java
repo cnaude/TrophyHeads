@@ -15,7 +15,6 @@ import org.bukkit.Material;
 import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -75,7 +74,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         saveConfig();
         loadConfig();
         getServer().getPluginManager().registerEvents(this, this);
-        getCommand("headspawn").setExecutor(this);
+        getCommand("headspawn").setExecutor(new HeadSpawnCommand());
+        getCommand("trophyreload").setExecutor(new ReloadCommand(this));
 
         if (renameEnabled) {
             ItemStack resultHead = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
@@ -86,46 +86,12 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (player.hasPermission("trophyheads.spawn")) {
-                String pName = player.getName();
-                int count = 1;
-                if (args.length >= 1) {
-                    pName = args[0];
-                    if (args.length == 2) {
-                        if (args[1].matches("\\d+")) {
-                            count = Integer.parseInt(args[1]);
-                        }
-                    }
-                }
-                ItemStack item = new ItemStack(Material.SKULL_ITEM, count, (byte) 3);
-                Location loc = player.getLocation().clone();
-                World world = loc.getWorld();
-                ItemMeta itemMeta = item.getItemMeta();
-                ((SkullMeta) itemMeta).setOwner(pName);
-                item.setItemMeta(itemMeta);
-                if (player.getInventory().firstEmpty() > -1) {
-                    player.sendMessage("Placed " + ChatColor.GOLD
-                            + pName + "'s head " + ChatColor.RESET + " in your inventory.");
-                    player.getInventory().setItem(player.getInventory().firstEmpty(), item);
-                } else {
-                    player.sendMessage("Dropped " + ChatColor.GOLD
-                            + pName + "'s head" + ChatColor.RESET
-                            + " on the ground because your inventory was full.");
-                    world.dropItemNaturally(loc, item);
-                }
-
-            } else {
-                player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-
-            }
-        } else {
-            sender.sendMessage("Only a player can use this command!");
-        }
-        return true;
+    public void reloadMainConfig(CommandSender sender) {
+        reloadConfig();
+        getConfig().options().copyDefaults(false);
+        loadConfig();
+        sender.sendMessage(ChatColor.GOLD + "[TrophyHeads] "
+                + ChatColor.WHITE + "Configuration reloaded.");
     }
 
     public EntityType getCustomSkullType(String name) {
