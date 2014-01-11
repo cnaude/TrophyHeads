@@ -22,6 +22,8 @@ sneak-punch-no-break: true
 message: '&eThis head once belonged to &c%%NAME%%&e.'
 # Nothing to see here.
 debug-enabled: false  
+info-blacklist: 
+    - IGNOREDUSER
 # Custom skulls
 custom-heads:
   Blaze:

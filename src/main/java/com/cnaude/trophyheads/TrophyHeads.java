@@ -61,6 +61,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static final EnumMap<EntityType, Integer> dropChances = new EnumMap<EntityType, Integer>(EntityType.class);
     private static final EnumMap<EntityType, String> customSkins = new EnumMap<EntityType, String>(EntityType.class);
     private static final EnumMap<EntityType, String> skullMessages = new EnumMap<EntityType, String>(EntityType.class);
+    private static ArrayList<String> infoBlackList = new ArrayList<String>();
     private static Material renameItem = Material.PAPER;
 
     @Override
@@ -181,9 +182,13 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 } else {
                     message = skullMessages.get(EntityType.PLAYER);
                 }
-                message = message.replaceAll("%%NAME%%", pName);
-                message = ChatColor.translateAlternateColorCodes('&', message);
-                player.sendMessage(message);
+                if (infoBlackList.contains(pName.toLowerCase())) {
+                    logDebug("Ignoring: " + pName);
+                } else {
+                    message = message.replaceAll("%%NAME%%", pName);
+                    message = ChatColor.translateAlternateColorCodes('&', message);
+                    player.sendMessage(message);
+                }
                 event.setCancelled(noBreak);
             }
         }
@@ -477,6 +482,11 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
         deathTypes.addAll(getConfig().getStringList("death-types"));
 
+        infoBlackList.clear();
+        for (String name : getConfig().getStringList("info-blacklist")) {
+            infoBlackList.add(name.toLowerCase());
+            logDebug("Blacklisting: " + name.toLowerCase());
+        }
     }
 
     public void logInfo(String _message) {
