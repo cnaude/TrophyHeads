@@ -116,8 +116,7 @@
                         <phase>package</phase>
                         <configuration>
                             <tasks>                                                                                             
-                                <copy file="../${project.name}/target/${project.name}-${project.version}.jar" tofile="../${project.name}/target/${project.name}.jar"/>
-                                <copy file="../${project.name}/target/${project.name}.jar" tofile="../../../../Dropbox/Public/dist/${project.name}.jar"/>                                
+                                <copy file="../${project.name}/target/${project.name}-${project.version}.jar" tofile="../${project.name}/target/${project.name}.jar"/>                                
                                 <exec dir="../${project.name}/target" executable="${scp}">
                                     <arg line="${arg} ${project.name}.jar cnaude@cn.revisited.us:minetest/plugins/"/>
                                 </exec>  
