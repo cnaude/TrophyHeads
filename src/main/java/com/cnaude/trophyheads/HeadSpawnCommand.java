@@ -22,6 +22,12 @@ import org.bukkit.inventory.meta.SkullMeta;
  * @author cnaude
  */
 public class HeadSpawnCommand implements CommandExecutor {
+    
+    final TrophyHeads plugin;
+    
+    public HeadSpawnCommand(TrophyHeads plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
@@ -42,8 +48,9 @@ public class HeadSpawnCommand implements CommandExecutor {
                 Location loc = player.getLocation().clone();
                 World world = loc.getWorld();
                 ItemMeta itemMeta = item.getItemMeta();
-                ((SkullMeta) itemMeta).setOwner(pName);
+                ((SkullMeta) itemMeta).setOwner(pName);     
                 item.setItemMeta(itemMeta);
+                plugin.logDebug("Skull: " + item.toString());
                 if (player.getInventory().firstEmpty() > -1) {
                     player.sendMessage("Placed " + ChatColor.GOLD
                             + pName + "'s head " + ChatColor.RESET + " in your inventory.");

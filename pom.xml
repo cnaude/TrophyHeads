@@ -13,23 +13,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Bukkit API Version, change if out dated -->
-        <bukkit.version>1.7.2-R0.3</bukkit.version>
+        <bukkit.version>1.7.9-R0.1</bukkit.version>
     </properties>
 
     <repositories>
-        <!-- Bukkit -->
+        <!-- For anything else without its own repo -->
         <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
+            <id>cnaude-repo</id>
+            <url>http://cnaude.org/repo/</url>
         </repository>
-       
-        <repository>
-            <id>comphenix-rep</id>
-            <name>Comphenix Repository</name>
-            <url>http://repo.comphenix.net/content/groups/public</url>
-        </repository>
-
-        <!-- For JUnitBenchmarks -->
+        
         <repository>
             <id>sonatype-nexus-public</id>
             <name>SonaType public snapshots and releases repository</name>
@@ -39,9 +32,19 @@
                 <enabled>false</enabled>
             </releases> 
             <snapshots>
-                <enabled>true</enabled>
+                <enabled>false</enabled>
             </snapshots>
         </repository>
+        
+        <!-- Bukkit -->
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        
     </repositories>
     
     <dependencies>

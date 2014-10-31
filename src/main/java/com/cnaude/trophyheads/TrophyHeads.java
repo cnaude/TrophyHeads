@@ -61,7 +61,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static final EnumMap<EntityType, Integer> dropChances = new EnumMap<EntityType, Integer>(EntityType.class);
     private static final EnumMap<EntityType, String> customSkins = new EnumMap<EntityType, String>(EntityType.class);
     private static final EnumMap<EntityType, String> skullMessages = new EnumMap<EntityType, String>(EntityType.class);
-    private static ArrayList<String> infoBlackList = new ArrayList<String>();
+    private static final ArrayList<String> infoBlackList = new ArrayList<String>();
     private static Material renameItem = Material.PAPER;
 
     @Override
@@ -75,14 +75,14 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         saveConfig();
         loadConfig();
         getServer().getPluginManager().registerEvents(this, this);
-        getCommand("headspawn").setExecutor(new HeadSpawnCommand());
+        getCommand("headspawn").setExecutor(new HeadSpawnCommand(this));
         getCommand("trophyreload").setExecutor(new ReloadCommand(this));
 
         if (renameEnabled) {
             ItemStack resultHead = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ShapelessRecipe shapelessRecipe = new ShapelessRecipe(resultHead);
-            shapelessRecipe.addIngredient(1, Material.SKULL_ITEM, -1);
-            shapelessRecipe.addIngredient(1, renameItem, -1);
+            shapelessRecipe.addIngredient(1, Material.SKULL_ITEM);
+            shapelessRecipe.addIngredient(1, renameItem);
             getServer().addRecipe(shapelessRecipe);
         }
     }
@@ -119,7 +119,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 for (ItemStack i : ci.getContents()) {
                     if (i.getType().equals(Material.SKULL_ITEM)) {
                         if (i.getData().getData() != (byte) 3) {
-                            ci.setResult(new ItemStack(0));
+                            ci.setResult(new ItemStack(Material.AIR));
                             return;
                         }
                     }
@@ -153,13 +153,16 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         if (!player.hasPermission("trophyheads.info")) {
             return;
         }
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {            
             org.bukkit.block.Block block = event.getClickedBlock();
-            if (block.getType() == Material.SKULL) {
+            logDebug("Left clicked: " + block.getType().name());
+            if (block.getType().equals(Material.SKULL)) {
                 BlockState bs = block.getState();
+                logDebug("Block state: " + bs.toString());
                 org.bukkit.block.Skull skull = (org.bukkit.block.Skull) bs;
                 String pName = "Unknown";
                 String message;
+                logDebug("Skull type: " + skull.getSkullType().name());
                 if (skull.getSkullType().equals(SkullType.PLAYER)) {
                     if (skull.hasOwner()) {
                         pName = skull.getOwner();
@@ -181,6 +184,12 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                     message = skullMessages.get(EntityType.ZOMBIE);
                 } else {
                     message = skullMessages.get(EntityType.PLAYER);
+                }
+                if (pName == null) {
+                    pName = "Unknown";
+                }
+                if (message == null) {
+                    message = "";
                 }
                 if (infoBlackList.contains(pName.toLowerCase())) {
                     logDebug("Ignoring: " + pName);
@@ -299,7 +308,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                         ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
                         ItemMeta itemMeta = item.getItemMeta();
                         ((SkullMeta) itemMeta).setOwner(pName);
-                        itemMeta.setDisplayName(ChatColor.GREEN + getCustomSkullType(pName).getName() + " Head");
+                        itemMeta.setDisplayName(ChatColor.GREEN + getCustomSkullType(pName).name() + " Head");
                         item.setItemMeta(itemMeta);
 
                         World world = loc.getWorld();
@@ -309,13 +318,6 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 }
             }
         }
-    }
-
-    public void setSkullName(ItemStack item, String name) {
-        ItemMeta itemMeta = item.getItemMeta();
-        ((SkullMeta) itemMeta).setOwner(name);
-        itemMeta.setDisplayName(name + " Head");
-        item.setItemMeta(itemMeta);
     }
 
     @EventHandler
@@ -373,13 +375,13 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
         if (sti == 3 || customSkins.containsKey(et)) {
             if (customSkins.get(et).equalsIgnoreCase("@default")) {
-                logDebug("Dropping default head for " + et.getName());
+                logDebug("Dropping default head for " + et.name());
             } else {
                 ItemMeta itemMeta = item.getItemMeta();
                 ((SkullMeta) itemMeta).setOwner(customSkins.get(et));
-                itemMeta.setDisplayName(et.getName() + " Head");
+                itemMeta.setDisplayName(et.name() + " Head");
                 item.setItemMeta(itemMeta);
-                logDebug("Dropping " + customSkins.get(et) + " head for " + et.getName());
+                logDebug("Dropping " + customSkins.get(et) + " head for " + et.name());
             }
         }
 
@@ -433,19 +435,26 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
         for (String entityName : getConfig().getConfigurationSection("custom-heads").getKeys(false)) {
             logDebug("Entity Name: " + entityName);
-            EntityType et;
-            if (entityName.equalsIgnoreCase("golem")) {
-                et = EntityType.IRON_GOLEM;
-            } else if (entityName.equalsIgnoreCase("ocelot")) {
-                et = EntityType.OCELOT;
-            } else {
-                et = EntityType.fromName(entityName);
+            if (entityName.equalsIgnoreCase("CaveSpider")) {
+                entityName = "CAVE_SPIDER";
+            } else if (entityName.equalsIgnoreCase("Golem")) {
+                entityName = "IRON_GOLEM";
+            } else if (entityName.equalsIgnoreCase("MushroomCow")) {
+                entityName = "MUSHROOM_COW";
+            } else if (entityName.equalsIgnoreCase("PigZombie")) {
+                entityName = "PIG_ZOMBIE";
+            } else if (entityName.equalsIgnoreCase("LavaSlime")) {
+                entityName = "LAVA_SLIME";
             }
-            if (et == null) {
-                logError("Invalid entity: " + entityName);
+            EntityType et;
+            try {                
+                et = EntityType.valueOf(entityName.toUpperCase());
+            } catch (Exception ex) {
+                logError("Invalid entity type: " + entityName + "[" + ex.getMessage() + "]");
                 continue;
             }
-            logDebug("  Type: " + et.getName());
+            
+            logDebug("  Type: " + et.name());
             int dropChance = getConfig().getInt("custom-heads." + entityName + ".drop-chance", 0);
             List<String> items = getConfig().getStringList("custom-heads." + entityName + ".items-required");
             if (items.isEmpty()) {
