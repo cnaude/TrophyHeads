@@ -433,36 +433,39 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         itemsRequired.put(EntityType.PLAYER, pItems);
         logDebug("Player items required: " + itemsRequired.get(EntityType.PLAYER));
 
-        for (String entityName : getConfig().getConfigurationSection("custom-heads").getKeys(false)) {
-            logDebug("Entity Name: " + entityName);
-            if (entityName.equalsIgnoreCase("CaveSpider")) {
+        for (String monsterName : getConfig().getConfigurationSection("custom-heads").getKeys(false)) {
+            logDebug("Entity Name: " + monsterName);
+            String entityName;
+            if (monsterName.equalsIgnoreCase("CaveSpider")) {
                 entityName = "CAVE_SPIDER";
-            } else if (entityName.equalsIgnoreCase("Golem")) {
+            } else if (monsterName.equalsIgnoreCase("Golem")) {
                 entityName = "IRON_GOLEM";
-            } else if (entityName.equalsIgnoreCase("MushroomCow")) {
+            } else if (monsterName.equalsIgnoreCase("MushroomCow")) {
                 entityName = "MUSHROOM_COW";
-            } else if (entityName.equalsIgnoreCase("PigZombie")) {
+            } else if (monsterName.equalsIgnoreCase("PigZombie")) {
                 entityName = "PIG_ZOMBIE";
-            } else if (entityName.equalsIgnoreCase("LavaSlime")) {
+            } else if (monsterName.equalsIgnoreCase("LavaSlime")) {
                 entityName = "MAGMA_CUBE";
+            } else {
+                entityName = monsterName;
             }
             EntityType et;
             try {                
                 et = EntityType.valueOf(entityName.toUpperCase());
             } catch (Exception ex) {
-                logError("Invalid entity type: " + entityName + "[" + ex.getMessage() + "]");
+                logError("Invalid entity type: " + monsterName + "[" + ex.getMessage() + "]");
                 continue;
             }
             
             logDebug("  Type: " + et.name());
-            int dropChance = getConfig().getInt("custom-heads." + entityName + ".drop-chance", 0);
-            List<String> items = getConfig().getStringList("custom-heads." + entityName + ".items-required");
+            int dropChance = getConfig().getInt("custom-heads." + monsterName + ".drop-chance", 0);
+            List<String> items = getConfig().getStringList("custom-heads." + monsterName + ".items-required");
             if (items.isEmpty()) {
                 items.add("ANY");
                 items.add("276");
             }
-            String skin = getConfig().getString("custom-heads." + entityName + ".skin", "MHF_" + entityName);
-            String message = getConfig().getString("custom-heads." + entityName + ".message", "&eThis head once belonged to a &e" + entityName + "&e.");
+            String skin = getConfig().getString("custom-heads." + monsterName + ".skin", "MHF_" + monsterName);
+            String message = getConfig().getString("custom-heads." + monsterName + ".message", "&eThis head once belonged to a &e" + monsterName + "&e.");
 
             dropChances.put(et, dropChance);
             logDebug("  Chance to drop head: " + dropChances.get(et) + "%");
