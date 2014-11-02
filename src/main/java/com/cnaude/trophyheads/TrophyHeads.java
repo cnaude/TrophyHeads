@@ -207,6 +207,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         if (et == null || mat == null) {
             return false;
         }
+        logDebug("isValidItem [: " + et.name() + "] [" + mat.name() + "] [" + itemsRequired.size());
         if (itemsRequired.containsKey(et)) {
             if (itemsRequired.get(et).contains("ANY")) {
                 return true;
