@@ -3,6 +3,8 @@ version: ${project.version}
 description: ${project.description}
 author: cnaude
 main: com.cnaude.trophyheads.TrophyHeads
+softdepend:
+  - Carbon
 commands:
     headspawn:
         description: Spawn the head of a player

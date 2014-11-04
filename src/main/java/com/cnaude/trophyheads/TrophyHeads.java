@@ -153,7 +153,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         if (!player.hasPermission("trophyheads.info")) {
             return;
         }
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {            
+        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
             org.bukkit.block.Block block = event.getClickedBlock();
             logDebug("Left clicked: " + block.getType().name());
             if (block.getType().equals(Material.SKULL)) {
@@ -207,7 +207,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         if (et == null || mat == null) {
             return false;
         }
-        logDebug("isValidItem [: " + et.name() + "] [" + mat.name() + "] [" + itemsRequired.size());
+        logDebug("isValidItem [: " + et.name() + "] [" + mat.name() + "] [" + itemsRequired.size() + "]");
         if (itemsRequired.containsKey(et)) {
             if (itemsRequired.get(et).contains("ANY")) {
                 return true;
@@ -451,13 +451,13 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 entityName = monsterName;
             }
             EntityType et;
-            try {                
+            try {
                 et = EntityType.valueOf(entityName.toUpperCase());
             } catch (Exception ex) {
                 logError("Invalid entity type: " + monsterName + "[" + ex.getMessage() + "]");
                 continue;
             }
-            
+
             logDebug("  Type: " + et.name());
             int dropChance = getConfig().getInt("custom-heads." + monsterName + ".drop-chance", 0);
             List<String> items = getConfig().getStringList("custom-heads." + monsterName + ".items-required");
