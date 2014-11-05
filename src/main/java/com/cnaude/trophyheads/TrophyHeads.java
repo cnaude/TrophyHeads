@@ -206,21 +206,26 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     public boolean isValidItem(EntityType et, Material mat) {
         if (et == null || mat == null) {
             return false;
-        }
-        logDebug("isValidItem [: " + et.name() + "] [" + mat.name() + "] [" + itemsRequired.size() + "]");
-        if (itemsRequired.containsKey(et)) {
-            if (itemsRequired.get(et).contains("ANY")) {
-                return true;
-            }
-            if (itemsRequired.get(et).contains(String.valueOf(mat.getId()))) {
-                return true;
-            } else {
-                for (String s : itemsRequired.get(et)) {
-                    if (s.toUpperCase().equals(mat.toString())) {
-                        return true;
+        }        
+        try {
+            if (itemsRequired.containsKey(et)) {
+                if (itemsRequired.get(et).contains("ANY")) {
+                    return true;
+                }
+                if (itemsRequired.get(et).contains(String.valueOf(mat.getId()))) {
+                    return true;
+                } else {
+                    for (String s : itemsRequired.get(et)) {
+                        if (s.toUpperCase().equals(mat.toString())) {
+                            return true;
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            logDebug("isValidItem: Catching exception: " + ex.getMessage() 
+                    + " [: " + et.name() + "] [" + mat.name() + "] [" + itemsRequired.size() + "]");
+            return false;
         }
         return false;
     }
