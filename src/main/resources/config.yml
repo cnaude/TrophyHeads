@@ -166,3 +166,24 @@ custom-heads:
     - 276
     skin: '@default'
     message: '&eThis head once belonged to an angry &cCreeper&e.'
+  Guardian:
+    drop-chance: 0
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Guardian
+    message: '&eThis head once belonged to a &cGuardian&e.'
+  Endermite:
+    drop-chance: 0
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Endermite
+    message: '&eThis head once belonged to a &cEndermite&e.'
+  Rabbit:
+    drop-chance: 0
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Rabbit
+    message: '&eThis head once belonged to a &cRabbit&e.'
