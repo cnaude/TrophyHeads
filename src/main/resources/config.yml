@@ -5,7 +5,7 @@ rename-enabled: false
 # Set the item here for the rename recipe. Defaukt is 339 which is paper. Rename the item in an anvil first.
 rename-item: 339
 # The % chance for a player to drop their head. Integer between 0 and 100.
-drop-chance: 50
+drop-chance: 100
 # Valid death types for a player to drop head. 
 # See: http://jd.bukkit.org/rb/apidocs/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html#enum_constant_summary
 death-types:  
@@ -160,7 +160,8 @@ custom-heads:
     skin: '@default'
     message: '&eThis head once belonged to a &cSkeleton&e.'
   Creeper:
-    drop-chance: 50
+    drop-chance: 100
+
     items-required:
     - ANY
     - 276
