@@ -27,161 +27,161 @@ info-blacklist:
 # Custom skulls
 custom-heads:
   Blaze:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Blaze
     message: '&eThis head once belonged to a &6Blaze&e.'
   CaveSpider:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_CaveSpider
     message: '&eThis head once belonged to a &8CaveSpider&e.'
   Chicken:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Chicken
     message: '&eThis head once belonged to a &fChicken&e.'
   Cow:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Cow
     message: '&eThis head once belonged to a &8Cow&e.'
   Enderman:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Enderman
     message: '&eThis head once belonged to a &5Enderman&e.'
   Ghast:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Ghast
     message: '&eThis head once belonged to a &fGhast&e.'
   Golem:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Golem
     message: '&eThis head once belonged to a &fGolem&e.'
   LavaSlime:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_LavaSlime
     message: '&eThis head once belonged to a &6LavaSlime&e.'
   MushroomCow:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_MushroomCow
     message: '&eThis head once belonged to a &4MushroomCow&e.'
   Ocelot:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Ocelot
     message: '&eThis head once belonged to a &6Ocelot&e.'
   Pig:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Pig
     message: '&eThis head once belonged to a &dPig&e.'
   PigZombie:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_PigZombie
     message: '&eThis head once belonged to a &5PigZombie&e.'
   Sheep:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Sheep
     message: '&eThis head once belonged to a &7Sheep&e.'
   Slime:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Slime
     message: '&eThis head once belonged to a &2Slime&e.'
   Spider:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Spider
     message: '&eThis head once belonged to a &8Spider&e.'
   Squid:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Squid
     message: '&eThis head once belonged to a &8Squid&e.'
   Villager:
-    drop-chance:100
+    drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Villager
     message: '&eThis head once belonged to a &3Villager&e.'
   Zombie:
-    drop-chance:100
+    drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to a hungry &cZombie&e.'
   Skeleton:
-    drop-chance:100
+    drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to a &cSkeleton&e.'
   Creeper:
-    drop-chance:100
+    drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to an angry &cCreeper&e.'
   Guardian:
-    drop-chance:100
+    drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: MHF_Guardian
     message: '&eThis head once belonged to a &cGuardian&e.'
   Endermite:
-    drop-chance:100
+    drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: MHF_Endermite
     message: '&eThis head once belonged to a &cEndermite&e.'
   Rabbit:
-    drop-chance:100
+    drop-chance: 100
     items-required:
     - ANY
     - 276
