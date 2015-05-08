@@ -201,7 +201,7 @@ custom-heads:
     - 276
     skin: MHF_EnderDragon
     message: '&eThis head once belonged to an &cEnderDragon&e.'
-  SnowGolem:
+  Snowman:
     drop-chance: 100
     items-required:
     - ANY
