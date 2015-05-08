@@ -185,5 +185,40 @@ custom-heads:
     items-required:
     - ANY
     - 276
-    skin: MHF_Rabbit
+    skin: MHF_Bunny
     message: '&eThis head once belonged to a &cRabbit&e.'
+  Wolf:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Wolf
+    message: '&eThis head once belonged to a &cWolf&e.'
+  Enderdragon:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_EnderDragon
+    message: '&eThis head once belonged to an &cEnderDragon&e.'
+  SnowGolem:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_SnowGolem
+    message: '&eThis head once belonged to an &SnowGolem&e.'
+  Wither:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Wither
+    message: '&eThis head once belonged to an &Wither&e.'
+  Witch:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Witch
+    message: '&eThis head once belonged to an &Witch&e.'    

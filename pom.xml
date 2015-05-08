@@ -123,7 +123,10 @@
                                 <copy file="../${project.name}/target/${project.name}-${project.version}.jar" tofile="../${project.name}/target/${project.name}.jar"/>
                                 <exec dir="../${project.name}/target" executable="scp">
                                     <arg line="${project.name}.jar cnaude@cn.revisited.us:minetest/plugins/"/>
-                                </exec>                              
+                                </exec>   
+                                <exec dir="../${project.name}/target" executable="scp">
+                                    <arg line="${project.name}.jar cnaude@cn.revisited.us:spigottest/plugins/"/>
+                                </exec>                            
                             </tasks>
                         </configuration>
                         <goals>
