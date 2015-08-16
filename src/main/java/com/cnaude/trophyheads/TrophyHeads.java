@@ -449,6 +449,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 entityName = "PIG_ZOMBIE";
             } else if (monsterName.equalsIgnoreCase("LavaSlime")) {
                 entityName = "MAGMA_CUBE";
+            } else if (monsterName.equalsIgnoreCase("EnderDragon")) {
+                entityName = "ENDER_DRAGON";
             } else {
                 entityName = monsterName;
             }
