@@ -9,7 +9,11 @@ commands:
     headspawn:
         description: Spawn the head of a player
         aliases: [head]
-        usage: /headspawn [name] ([count])
+        usage: /headspawn [player] ([count])
+    headgive:
+        description: Spawn the head of a player
+        aliases: [headg]
+        usage: /headspawn [player] [skull name] ([count])
     trophyreload:
         description: Reload configuration
         aliases: [threload,thr]

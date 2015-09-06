@@ -16,34 +16,42 @@ import org.bukkit.inventory.meta.SkullMeta;
  *
  * @author cnaude
  */
-public class HeadSpawnCommand implements CommandExecutor {
-    
+public class HeadGiveCommand implements CommandExecutor {
+
     final TrophyHeads plugin;
-    
-    public HeadSpawnCommand(TrophyHeads plugin) {
+
+    public HeadGiveCommand(TrophyHeads plugin) {
         this.plugin = plugin;
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (player.hasPermission("trophyheads.spawn")) {
-                String pName = player.getName();
+        if (sender.hasPermission("trophyheads.give")) {
+            if (args.length >= 2) {
+                Player player = null;
+                String pName = args[1];
+                for (Player pl : plugin.getServer().getOnlinePlayers()) {
+                    if (args[0].equalsIgnoreCase(pl.getName())) {
+                        player = pl;
+                    }
+                }
+                if (player == null) {
+                    sender.sendMessage(ChatColor.RED + "Player " + ChatColor.WHITE
+                            + args[0] + ChatColor.RED + " not found!");
+                    return true;
+                }
+
                 int count = 1;
-                if (args.length >= 1) {
-                    pName = args[0];
-                    if (args.length == 2) {
-                        if (args[1].matches("\\d+")) {
-                            count = Integer.parseInt(args[1]);
-                        }
+                if (args.length == 3) {
+                    if (args[1].matches("\\d+")) {
+                        count = Integer.parseInt(args[1]);
                     }
                 }
                 ItemStack item = new ItemStack(Material.SKULL_ITEM, count, (byte) 3);
                 Location loc = player.getLocation().clone();
                 World world = loc.getWorld();
                 ItemMeta itemMeta = item.getItemMeta();
-                ((SkullMeta) itemMeta).setOwner(pName);     
+                ((SkullMeta) itemMeta).setOwner(pName);
                 item.setItemMeta(itemMeta);
                 plugin.logDebug("Skull: " + item.toString());
                 if (player.getInventory().firstEmpty() > -1) {
@@ -56,13 +64,13 @@ public class HeadSpawnCommand implements CommandExecutor {
                             + " on the ground because your inventory was full.");
                     world.dropItemNaturally(loc, item);
                 }
-
             } else {
-                player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
-
+                sender.sendMessage("Usage: /headgive <player> <skull name> <count>");
             }
+
         } else {
-            sender.sendMessage(ChatColor.RED + "Only a player can use this command! Try the headgive command instead.");
+            sender.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+
         }
         return true;
     }
