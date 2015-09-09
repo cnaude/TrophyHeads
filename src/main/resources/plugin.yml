@@ -22,6 +22,9 @@ permissions:
   'trophyheads.spawn':
     description: Gives player access to the /headspawn command.
     default: op
+  'trophyheads.give':
+    description: Gives player access to the /headgive command.
+    default: op    
   'trophyheads.drop':
     description: Allows players to randomly drop heads at death.
     default: true
