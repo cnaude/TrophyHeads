@@ -1,5 +1,7 @@
 package com.cnaude.trophyheads;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,11 +49,22 @@ public class HeadGiveCommand implements CommandExecutor {
                         count = Integer.parseInt(args[1]);
                     }
                 }
+                List<String> lore = new ArrayList<>();
+                if (args.length >= 4) {
+                    String m = "";
+                    for (int i = 3; i < args.length; i++) {
+                        m = m + " " + args[i];
+                    }
+                    lore.add(ChatColor.translateAlternateColorCodes('&', m.substring(1)));
+                }
                 ItemStack item = new ItemStack(Material.SKULL_ITEM, count, (byte) 3);
                 Location loc = player.getLocation().clone();
                 World world = loc.getWorld();
                 ItemMeta itemMeta = item.getItemMeta();
                 ((SkullMeta) itemMeta).setOwner(pName);
+                if (!lore.isEmpty()) {
+                    ((SkullMeta) itemMeta).setLore(lore);
+                }
                 item.setItemMeta(itemMeta);
                 plugin.logDebug("Skull: " + item.toString());
                 if (player.getInventory().firstEmpty() > -1) {
@@ -65,7 +78,7 @@ public class HeadGiveCommand implements CommandExecutor {
                     world.dropItemNaturally(loc, item);
                 }
             } else {
-                sender.sendMessage("Usage: /headgive <player> <skull name> <count>");
+                sender.sendMessage("Usage: /headgive <player> <skull name> <count> <lore>");
             }
 
         } else {
