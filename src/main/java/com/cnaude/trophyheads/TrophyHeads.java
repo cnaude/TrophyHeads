@@ -50,17 +50,17 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static Random randomGenerator;
     private File pluginFolder;
     private File configFile;
-    private static final ArrayList<String> DEATH_TYPES = new ArrayList<String>();
+    private static final ArrayList<String> DEATH_TYPES = new ArrayList<>();
     private static boolean debugEnabled = false;
     private static boolean renameEnabled = false;
     private static boolean playerSkin = true;
     private static boolean sneakPunchInfo = true;
     private static boolean noBreak = true;
-    private static final CaseInsensitiveMap<List<String>> ITEMS_REQUIRED = new CaseInsensitiveMap<List<String>>();
-    private static final CaseInsensitiveMap<Integer> DROP_CHANCES = new CaseInsensitiveMap<Integer>();
-    private static final CaseInsensitiveMap<String> CUSTOM_SKINS = new CaseInsensitiveMap<String>();
-    private static final CaseInsensitiveMap<String> SKULL_MESSAGES = new CaseInsensitiveMap<String>();
-    private static final ArrayList<String> INFO_BLACKLIST = new ArrayList<String>();
+    private static final CaseInsensitiveMap<List<String>> ITEMS_REQUIRED = new CaseInsensitiveMap<>();
+    private static final CaseInsensitiveMap<Integer> DROP_CHANCES = new CaseInsensitiveMap<>();
+    private static final CaseInsensitiveMap<String> CUSTOM_SKINS = new CaseInsensitiveMap<>();
+    private static final CaseInsensitiveMap<String> SKULL_MESSAGES = new CaseInsensitiveMap<>();
+    private static final ArrayList<String> INFO_BLACKLIST = new ArrayList<>();
     private static Material renameItem = Material.PAPER;
 
     @Override
@@ -273,7 +273,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
             ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
             ItemMeta itemMeta = item.getItemMeta();
-            ArrayList<String> itemDesc = new ArrayList<String>();
+            ArrayList<String> itemDesc = new ArrayList<>();
             itemMeta.setDisplayName("Head of " + pName);
             itemDesc.add(event.getDeathMessage());
             itemMeta.setLore(itemDesc);

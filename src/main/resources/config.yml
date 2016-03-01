@@ -138,6 +138,13 @@ custom-heads:
       - 276
     skin: MHF_Squid
     message: '&eThis head once belonged to a &8Squid&e.'
+  Shulker:
+    drop-chance: 100
+    items-required:
+      - ANY
+      - 276
+    skin: MHF_Shulker
+    message: '&eThis head once belonged to a &5Shulker&e.'    
   Villager:
     drop-chance: 100
     items-required:
