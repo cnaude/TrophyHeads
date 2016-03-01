@@ -143,7 +143,7 @@ custom-heads:
     items-required:
       - ANY
       - 276
-    skin: MHF_Shulker
+    skin: shulker_ninja
     message: '&eThis head once belonged to a &5Shulker&e.'    
   Villager:
     drop-chance: 100
