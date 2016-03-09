@@ -31,8 +31,8 @@ custom-heads:
     items-required:
       - ANY
       - 276
-    skin: MHF_Blaze
-    message: '&eThis head once belonged to a &6Blaze&e.'    
+    skin: MonkeyBatman
+    message: '&eThis head once belonged to a &6Bat&e.'    
   Blaze:
     drop-chance: 100
     items-required:
@@ -248,7 +248,7 @@ custom-heads:
     items-required:
     - ANY
     - 276
-    skin: MHF_Horse
+    skin: KinkyHorseLover
     message: '&eThis head once belonged to a &4Horse&e.'
   SilverFish:
     drop-chance: 100
