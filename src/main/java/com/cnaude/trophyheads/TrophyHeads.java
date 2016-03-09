@@ -327,52 +327,54 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent event) {
-        EntityType et = event.getEntityType();
-        if (et.equals(EntityType.PLAYER)) {
+        Player player;
+        EntityType entityType = event.getEntityType();
+        String entityName = entityType.name();
+        Entity entity = event.getEntity();
+        int skullType;
+        boolean dropOkay;
+        
+        if (entityType.equals(EntityType.PLAYER)) {
             return;
         }
-        Entity e = event.getEntity();
-        int sti;
-        boolean dropOkay;
-
-        Player player;
-        Material mat = Material.AIR;
-        if (((LivingEntity) e).getKiller() instanceof Player) {
-            player = (Player) ((LivingEntity) e).getKiller();
-            mat = player.getItemInHand().getType();
+        
+        Material material = Material.AIR;
+        if (((LivingEntity) entity).getKiller() instanceof Player) {
+            player = (Player) ((LivingEntity) entity).getKiller();
+            material = player.getItemInHand().getType();
         }
 
-        dropOkay = isValidItem(et, mat);
+        dropOkay = isValidItem(entityType, material);
 
-        if (et.equals(EntityType.SKELETON)) {
-            if (((Skeleton) e).getSkeletonType().equals(SkeletonType.NORMAL)) {
-                if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
+        if (entityType.equals(EntityType.SKELETON)) {
+            if (((Skeleton) entity).getSkeletonType().equals(SkeletonType.NORMAL)) {
+                if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
                     return;
                 }
-                sti = 0;
+                skullType = 0;
             } else {
                 return;
             }
-        } else if (et.equals(EntityType.ZOMBIE)) {
-            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
+        } else if (entityType.equals(EntityType.ZOMBIE)) {
+            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
                 return;
             }
-            sti = 2;
-        } else if (et.equals(EntityType.CREEPER)) {
-            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
+            skullType = 2;
+        } else if (entityType.equals(EntityType.CREEPER)) {
+            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
                 return;
             }
-            sti = 4;
-        } else if (et.equals(EntityType.ENDER_DRAGON)) {
-            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
+            skullType = 4;
+        } else if (entityType.equals(EntityType.ENDER_DRAGON)) {
+            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
                 return;
             }
-            sti = 5;
-        } else if (DROP_CHANCES.containsKey(et.name())) {
-            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
+            skullType = 5;
+        } else if (DROP_CHANCES.containsKey(entityType.name())) {
+            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
                 return;
             }
-            sti = 3;
+            skullType = 3;
         } else {
             return;
         }
@@ -381,26 +383,25 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             return;
         }
 
-        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) sti);
-
-        String etName = et.name();
-        if (et.equals(EntityType.GUARDIAN)) {
-            if (((Guardian) e).isElder()) {
-                etName = "ElderGuardian";
+        ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) skullType);
+        
+        if (entityType.equals(EntityType.GUARDIAN)) {
+            if (((Guardian) entity).isElder()) {
+                entityName = "ElderGuardian";
             }
         }
-        if (sti == 3 || CUSTOM_SKINS.containsKey(etName)) {
-            logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(etName) + "] "
-                    + "[etName: " + etName + "] [etStr: " + et.toString() + "]");
-            if (!CUSTOM_SKINS.get(et.name()).equalsIgnoreCase("@default")) {
+        if (skullType == 3 || CUSTOM_SKINS.containsKey(entityName)) {
+            logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(entityName) + "] "
+                    + "[etName: " + entityName + "] [etStr: " + entityType.toString() + "]");
+            if (!CUSTOM_SKINS.get(entityType.name()).equalsIgnoreCase("@default")) {
                 ItemMeta itemMeta = item.getItemMeta();
-                ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(etName));
-                itemMeta.setDisplayName(etName + " Head");
+                ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(entityName));
+                itemMeta.setDisplayName(entityName + " Head");
                 item.setItemMeta(itemMeta);
             }
         }
 
-        Location loc = e.getLocation().clone();
+        Location loc = entity.getLocation().clone();
         World world = loc.getWorld();
         world.dropItemNaturally(loc, item);
     }
@@ -464,19 +465,12 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             } else if (monsterName.equalsIgnoreCase("EnderDragon")) {
                 entityName = "ENDER_DRAGON";
             } else if (monsterName.equalsIgnoreCase("ElderGuardian")) {
-                entityName = "GUARDIAN";
+                entityName = "ELDERGUARDIAN";
             } else {
                 entityName = monsterName;
             }
-            EntityType et;
-            try {
-                et = EntityType.valueOf(entityName.toUpperCase());
-            } catch (Exception ex) {
-                logError("Invalid entity type: " + monsterName + "[" + ex.getMessage() + "]");
-                continue;
-            }
 
-            logDebug("  Type: " + et.name());
+            logDebug("  Type: " + entityName);
             int dropChance = getConfig().getInt("custom-heads." + monsterName + ".drop-chance", 0);
             List<String> items = getConfig().getStringList("custom-heads." + monsterName + ".items-required");
             if (items.isEmpty()) {
@@ -486,17 +480,17 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             String skin = getConfig().getString("custom-heads." + monsterName + ".skin", "MHF_" + monsterName);
             String message = getConfig().getString("custom-heads." + monsterName + ".message", "&eThis head once belonged to a &e" + monsterName + "&e.");
 
-            DROP_CHANCES.put(et.name(), dropChance);
-            logDebug("  Chance to drop head: " + DROP_CHANCES.get(et.name()) + "%");
+            DROP_CHANCES.put(entityName, dropChance);
+            logDebug("  Chance to drop head: " + DROP_CHANCES.get(entityName) + "%");
 
-            ITEMS_REQUIRED.put(et.name(), items);
-            logDebug("  Items required: " + ITEMS_REQUIRED.get(et.name()));
+            ITEMS_REQUIRED.put(entityName, items);
+            logDebug("  Items required: " + ITEMS_REQUIRED.get(entityName));
 
-            CUSTOM_SKINS.put(et.name(), skin);
-            logDebug("  Skin: " + CUSTOM_SKINS.get(et.name()));
+            CUSTOM_SKINS.put(entityName, skin);
+            logDebug("  Skin: " + CUSTOM_SKINS.get(entityName));
 
-            SKULL_MESSAGES.put(et.name(), message);
-            logDebug("  Message: " + SKULL_MESSAGES.get(et.name()));
+            SKULL_MESSAGES.put(entityName, message);
+            logDebug("  Message: " + SKULL_MESSAGES.get(entityName));
 
         }
 
