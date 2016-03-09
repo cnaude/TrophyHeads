@@ -363,6 +363,11 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 return;
             }
             sti = 4;
+        } else if (et.equals(EntityType.ENDER_DRAGON)) {
+            if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
+                return;
+            }
+            sti = 5;
         } else if (DROP_CHANCES.containsKey(et.name())) {
             if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(et.name())) {
                 return;
@@ -387,8 +392,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         if (sti == 3 || CUSTOM_SKINS.containsKey(etName)) {
             logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(etName) + "] "
                     + "[etName: " + etName + "] [etStr: " + et.toString() + "]");
-            if (CUSTOM_SKINS.get(et.name()).equalsIgnoreCase("@default")) {
-            } else {
+            if (!CUSTOM_SKINS.get(et.name()).equalsIgnoreCase("@default")) {
                 ItemMeta itemMeta = item.getItemMeta();
                 ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(etName));
                 itemMeta.setDisplayName(etName + " Head");
@@ -449,7 +453,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             String entityName;
             if (monsterName.equalsIgnoreCase("CaveSpider")) {
                 entityName = "CAVE_SPIDER";
-            } else if (monsterName.equalsIgnoreCase("Golem")) {
+            } else if (monsterName.equalsIgnoreCase("Golem") || monsterName.equalsIgnoreCase("IronGolem")) {
                 entityName = "IRON_GOLEM";
             } else if (monsterName.equalsIgnoreCase("MushroomCow")) {
                 entityName = "MUSHROOM_COW";

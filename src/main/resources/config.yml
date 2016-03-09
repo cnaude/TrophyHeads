@@ -26,6 +26,13 @@ info-blacklist:
     - IGNOREDUSER
 # Custom skulls
 custom-heads:
+  Bat:
+    drop-chance: 100
+    items-required:
+      - ANY
+      - 276
+    skin: MHF_Blaze
+    message: '&eThis head once belonged to a &6Blaze&e.'    
   Blaze:
     drop-chance: 100
     items-required:
@@ -68,13 +75,13 @@ custom-heads:
       - 276
     skin: MHF_Ghast
     message: '&eThis head once belonged to a &fGhast&e.'
-  Golem:
+  IronGolem:
     drop-chance: 100
     items-required:
       - ANY
       - 276
     skin: MHF_Golem
-    message: '&eThis head once belonged to a &fGolem&e.'
+    message: '&eThis head once belonged to an &fIron Golem&e.'
   LavaSlime:
     drop-chance: 100
     items-required:
@@ -214,25 +221,39 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_EnderDragon
-    message: '&eThis head once belonged to an &cEnderDragon&e.'
+    message: '&eThis head once belonged to an &0EnderDragon&e.'
   Snowman:
     drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: MHF_SnowGolem
-    message: '&eThis head once belonged to an &SnowGolem&e.'
+    message: '&eThis head once belonged to an &fSnowGolem&e.'
   Wither:
     drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: MHF_Wither
-    message: '&eThis head once belonged to an &Wither&e.'
+    message: '&eThis head once belonged to an &0Wither&e.'
   Witch:
     drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: MHF_Witch
-    message: '&eThis head once belonged to an &Witch&e.'    
+    message: '&eThis head once belonged to an &2Witch&e.'
+  Horse:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: MHF_Horse
+    message: '&eThis head once belonged to a &4Horse&e.'
+  SilverFish:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: AlexVMiner
+    message: '&eThis head once belonged to a &7SilverFish&e.'      
