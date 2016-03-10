@@ -21,7 +21,6 @@ import org.bukkit.entity.Guardian;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,7 +30,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
@@ -56,8 +54,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static boolean debugEnabled = false;
     private static boolean renameEnabled = false;
     private static boolean playerSkin = true;
-    private static boolean sneakPunchInfo = true;
-    private static boolean noBreak = true;
+    private static String nonTropyHeadMessage = "";
     private static final CaseInsensitiveMap<List<String>> ITEMS_REQUIRED = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<Integer> DROP_CHANCES = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<String> CUSTOM_SKINS = new CaseInsensitiveMap<>();
@@ -153,33 +150,30 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             return;
         }
 
-        if (action.equals(Action.LEFT_CLICK_BLOCK) && !sneakPunchInfo) {
-            logDebug("Left click detected but sneak-punch-info is false.");
-            return;
-        }
-
-        if (action.equals(Action.LEFT_CLICK_BLOCK) && !player.isSneaking()) {
-            logDebug("Left click detected but player is not sneaking.");
-            return;
-        }
-
-        if (action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             org.bukkit.block.Block block = event.getClickedBlock();
             logDebug(action.name() + ": " + block.getType().name());
             if (block.getType().equals(Material.SKULL)) {
                 BlockState bs = block.getState();
                 org.bukkit.block.Skull skull = (org.bukkit.block.Skull) bs;
                 String pName = "Unknown";
-                String message;
+                String message = "";
                 logDebug("Skull type: " + skull.getSkullType().name());
                 if (skull.getSkullType().equals(SkullType.PLAYER)) {
                     if (skull.hasOwner()) {
                         pName = skull.getOwner();
                         logDebug("Skull owner: " + pName);
-                        if (CUSTOM_SKINS.containsValue(pName)) {
-                            message = SKULL_MESSAGES.get(getCustomSkullType(pName));
+                        if (pName == null) {
+                            if (!nonTropyHeadMessage.isEmpty()) {
+                                player.sendMessage(nonTropyHeadMessage);
+                                return;
+                            }
                         } else {
-                            message = SKULL_MESSAGES.get(EntityType.PLAYER.name());
+                            if (CUSTOM_SKINS.containsValue(pName)) {
+                                message = SKULL_MESSAGES.get(getCustomSkullType(pName));
+                            } else {
+                                message = SKULL_MESSAGES.get(EntityType.PLAYER.name());
+                            }
                         }
                     } else {
                         message = SKULL_MESSAGES.get(EntityType.PLAYER.toString());
@@ -210,9 +204,6 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                     message = ChatColor.translateAlternateColorCodes('&', message);
                     logDebug(message);
                     player.sendMessage(message);
-                }
-                if (action.equals(Action.LEFT_CLICK_BLOCK)) {
-                    event.setCancelled(noBreak);
                 }
             }
         }
@@ -322,6 +313,9 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             if (skull.getSkullType().equals(SkullType.PLAYER)) {
                 if (skull.hasOwner()) {
                     String pName = skull.getOwner();
+                    if (pName == null) {
+                        return;
+                    }
                     if (CUSTOM_SKINS.containsValue(pName)) {
                         Location loc = block.getLocation().clone();
                         event.setCancelled(true);
@@ -465,11 +459,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         playerSkin = getConfig().getBoolean("player-skin");
         logDebug("Player skins: " + playerSkin);
 
-        sneakPunchInfo = getConfig().getBoolean("sneak-punch-info");
-        logDebug("Sneak punch info: " + sneakPunchInfo);
-
-        noBreak = getConfig().getBoolean("sneak-punch-no-break");
-        logDebug("Sneak punch no break: " + noBreak);
+        nonTropyHeadMessage = ChatColor.translateAlternateColorCodes('&', (getConfig().getString("non-th-message", "&eThat is a Custom head!")));
+        logDebug("Non TH message: " + nonTropyHeadMessage);
 
         List<String> pItems = getConfig().getStringList("items-required");
         if (pItems.isEmpty()) {
