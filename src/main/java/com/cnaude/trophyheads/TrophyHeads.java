@@ -97,8 +97,10 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     }
 
     public String getCustomSkullType(String name) {
-        if (CUSTOM_SKINS.containsKey(name)) {
-            return name;
+        for (String key : CUSTOM_SKINS.keySet()) {
+            if (CUSTOM_SKINS.get(key).equalsIgnoreCase(name)) {
+                return key;
+            }
         }
         return EntityType.UNKNOWN.toString();
     }
@@ -142,22 +144,29 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
-        if (!sneakPunchInfo) {
-            return;
-        }
+        Action action = event.getAction();
         Player player = event.getPlayer();
-        if (!player.isSneaking()) {
-            return;
-        }
+
         if (!player.hasPermission("trophyheads.info")) {
+            logDebug("Player does not have permission: trophyheads.info");
             return;
         }
-        if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+
+        if (action.equals(Action.LEFT_CLICK_BLOCK) && !sneakPunchInfo) {
+            logDebug("Left click detected but sneak-punch-info is false.");
+            return;
+        }
+
+        if (action.equals(Action.LEFT_CLICK_BLOCK) && !player.isSneaking()) {
+            logDebug("Left click detected but player is not sneaking.");
+            return;
+        }
+
+        if (action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
             org.bukkit.block.Block block = event.getClickedBlock();
-            logDebug("Left clicked: " + block.getType().name());
+            logDebug(action.name() + ": " + block.getType().name());
             if (block.getType().equals(Material.SKULL)) {
                 BlockState bs = block.getState();
-                logDebug("Block state: " + bs.toString());
                 org.bukkit.block.Skull skull = (org.bukkit.block.Skull) bs;
                 String pName = "Unknown";
                 String message;
@@ -165,12 +174,17 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 if (skull.getSkullType().equals(SkullType.PLAYER)) {
                     if (skull.hasOwner()) {
                         pName = skull.getOwner();
+                        logDebug("Skull owner: " + pName);
                         if (CUSTOM_SKINS.containsValue(pName)) {
+                            logDebug("TH1");
                             message = SKULL_MESSAGES.get(getCustomSkullType(pName));
+                            logDebug("TH1_Message: " + message);
                         } else {
+                            logDebug("TH2");
                             message = SKULL_MESSAGES.get(EntityType.PLAYER.name());
                         }
                     } else {
+                        logDebug("TH3");
                         message = SKULL_MESSAGES.get(EntityType.PLAYER.toString());
                     }
                 } else if (skull.getSkullType().toString().equals(SkullType.CREEPER.toString())) {
@@ -193,11 +207,14 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 if (INFO_BLACKLIST.contains(pName.toLowerCase())) {
                     logDebug("Ignoring: " + pName);
                 } else {
-                    message = message.replaceAll("%%NAME%%", pName);
+                    message = message.replace("%%NAME%%", pName);
                     message = ChatColor.translateAlternateColorCodes('&', message);
+                    logDebug(message);
                     player.sendMessage(message);
                 }
-                event.setCancelled(noBreak);
+                if (action.equals(Action.LEFT_CLICK_BLOCK)) {
+                    event.setCancelled(noBreak);
+                }
             }
         }
     }
