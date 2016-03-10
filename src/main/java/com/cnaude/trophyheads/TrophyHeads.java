@@ -391,9 +391,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             }
         }
         if (skullType == 3 || CUSTOM_SKINS.containsKey(entityName)) {
-            logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(entityName) + "] "
-                    + "[etName: " + entityName + "] [etStr: " + entityType.toString() + "]");
-            if (!CUSTOM_SKINS.get(entityType.name()).equalsIgnoreCase("@default")) {
+            logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(entityName) + "] [etName: " + entityName + "]");
+            if (!CUSTOM_SKINS.get(entityName).equalsIgnoreCase("@default")) {
                 ItemMeta itemMeta = item.getItemMeta();
                 ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(entityName));
                 itemMeta.setDisplayName(entityName + " Head");
