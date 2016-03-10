@@ -176,15 +176,11 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                         pName = skull.getOwner();
                         logDebug("Skull owner: " + pName);
                         if (CUSTOM_SKINS.containsValue(pName)) {
-                            logDebug("TH1");
                             message = SKULL_MESSAGES.get(getCustomSkullType(pName));
-                            logDebug("TH1_Message: " + message);
                         } else {
-                            logDebug("TH2");
                             message = SKULL_MESSAGES.get(EntityType.PLAYER.name());
                         }
                     } else {
-                        logDebug("TH3");
                         message = SKULL_MESSAGES.get(EntityType.PLAYER.toString());
                     }
                 } else if (skull.getSkullType().toString().equals(SkullType.CREEPER.toString())) {

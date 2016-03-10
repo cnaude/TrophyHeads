@@ -221,7 +221,7 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_EnderDragon
-    message: '&eThis head once belonged to an &0EnderDragon&e.'
+    message: '&eThis head once belonged to an &dEnder Dragon&e.'
   Snowman:
     drop-chance: 100
     items-required:
@@ -235,7 +235,7 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_Wither
-    message: '&eThis head once belonged to an &0Wither&e.'
+    message: '&eThis head once belonged to a &dWither&e.'
   Witch:
     drop-chance: 100
     items-required:
