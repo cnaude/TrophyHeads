@@ -329,15 +329,16 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     public void onEntityDeathEvent(EntityDeathEvent event) {
         Player player;
         EntityType entityType = event.getEntityType();
-        String entityName = entityType.name();
         Entity entity = event.getEntity();
+        String entityName = entity.getName();
+        String entityTypeName = entity.getType().name();
         int skullType;
         boolean dropOkay;
-        
+
         if (entityType.equals(EntityType.PLAYER)) {
             return;
         }
-        
+
         Material material = Material.AIR;
         if (((LivingEntity) entity).getKiller() instanceof Player) {
             player = (Player) ((LivingEntity) entity).getKiller();
@@ -384,19 +385,24 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
 
         ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) skullType);
-        
+
         if (entityType.equals(EntityType.GUARDIAN)) {
             if (((Guardian) entity).isElder()) {
-                entityName = "ElderGuardian";
+                entityName = "Elder Guardian";
+                entityTypeName = "ELDER_GUARDIAN";
             }
         }
         if (skullType == 3 || CUSTOM_SKINS.containsKey(entityName)) {
-            logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(entityName) + "] [etName: " + entityName + "]");
-            if (!CUSTOM_SKINS.get(entityName).equalsIgnoreCase("@default")) {
-                ItemMeta itemMeta = item.getItemMeta();
-                ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(entityName));
-                itemMeta.setDisplayName(entityName + " Head");
-                item.setItemMeta(itemMeta);
+            logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(entityTypeName) + "] [etName: " + entityName + "] [etType: " + entityTypeName + "]");
+            if (CUSTOM_SKINS.containsKey(entityTypeName)) {
+                if (!CUSTOM_SKINS.get(entityTypeName).equalsIgnoreCase("@default")) {
+                    ItemMeta itemMeta = item.getItemMeta();
+                    ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(entityTypeName));
+                    itemMeta.setDisplayName(entityName + " Head");
+                    item.setItemMeta(itemMeta);
+                }
+            } else {
+                logDebug("Entity not in config: " + entityName);
             }
         }
 
@@ -450,26 +456,28 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
         for (String monsterName : getConfig().getConfigurationSection("custom-heads").getKeys(false)) {
             logDebug("Entity Name: " + monsterName);
-            String entityName;
+            String entityTypeName;
             if (monsterName.equalsIgnoreCase("CaveSpider")) {
-                entityName = "CAVE_SPIDER";
+                entityTypeName = "CAVE_SPIDER";
             } else if (monsterName.equalsIgnoreCase("Golem") || monsterName.equalsIgnoreCase("IronGolem")) {
-                entityName = "IRON_GOLEM";
+                entityTypeName = "IRON_GOLEM";
             } else if (monsterName.equalsIgnoreCase("MushroomCow")) {
-                entityName = "MUSHROOM_COW";
+                entityTypeName = "MUSHROOM_COW";
             } else if (monsterName.equalsIgnoreCase("PigZombie")) {
-                entityName = "PIG_ZOMBIE";
+                entityTypeName = "PIG_ZOMBIE";
             } else if (monsterName.equalsIgnoreCase("LavaSlime")) {
-                entityName = "MAGMA_CUBE";
+                entityTypeName = "MAGMA_CUBE";
             } else if (monsterName.equalsIgnoreCase("EnderDragon")) {
-                entityName = "ENDER_DRAGON";
+                entityTypeName = "ENDER_DRAGON";
             } else if (monsterName.equalsIgnoreCase("ElderGuardian")) {
-                entityName = "ELDERGUARDIAN";
+                entityTypeName = "ELDER_GUARDIAN";
+            } else if (monsterName.equalsIgnoreCase("SnowMan")) {
+                entityTypeName = "SNOW_GOLEM";
             } else {
-                entityName = monsterName;
+                entityTypeName = monsterName;
             }
 
-            logDebug("  Type: " + entityName);
+            logDebug("  Type: " + entityTypeName);
             int dropChance = getConfig().getInt("custom-heads." + monsterName + ".drop-chance", 0);
             List<String> items = getConfig().getStringList("custom-heads." + monsterName + ".items-required");
             if (items.isEmpty()) {
@@ -479,17 +487,17 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             String skin = getConfig().getString("custom-heads." + monsterName + ".skin", "MHF_" + monsterName);
             String message = getConfig().getString("custom-heads." + monsterName + ".message", "&eThis head once belonged to a &e" + monsterName + "&e.");
 
-            DROP_CHANCES.put(entityName, dropChance);
-            logDebug("  Chance to drop head: " + DROP_CHANCES.get(entityName) + "%");
+            DROP_CHANCES.put(entityTypeName, dropChance);
+            logDebug("  Chance to drop head: " + DROP_CHANCES.get(entityTypeName) + "%");
 
-            ITEMS_REQUIRED.put(entityName, items);
-            logDebug("  Items required: " + ITEMS_REQUIRED.get(entityName));
+            ITEMS_REQUIRED.put(entityTypeName, items);
+            logDebug("  Items required: " + ITEMS_REQUIRED.get(entityTypeName));
 
-            CUSTOM_SKINS.put(entityName, skin);
-            logDebug("  Skin: " + CUSTOM_SKINS.get(entityName));
+            CUSTOM_SKINS.put(entityTypeName, skin);
+            logDebug("  Skin: " + CUSTOM_SKINS.get(entityTypeName));
 
-            SKULL_MESSAGES.put(entityName, message);
-            logDebug("  Message: " + SKULL_MESSAGES.get(entityName));
+            SKULL_MESSAGES.put(entityTypeName, message);
+            logDebug("  Message: " + SKULL_MESSAGES.get(entityTypeName));
 
         }
 

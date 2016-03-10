@@ -228,7 +228,7 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_SnowGolem
-    message: '&eThis head once belonged to an &fSnowGolem&e.'
+    message: '&eThis head once belonged to an &fSnow Golem&e.'
   Wither:
     drop-chance: 100
     items-required:
@@ -250,10 +250,10 @@ custom-heads:
     - 276
     skin: KinkyHorseLover
     message: '&eThis head once belonged to a &4Horse&e.'
-  SilverFish:
+  Silverfish:
     drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: AlexVMiner
-    message: '&eThis head once belonged to a &7SilverFish&e.'      
+    message: '&eThis head once belonged to a &7Silverfish&e.'      
