@@ -31,6 +31,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
@@ -361,13 +362,23 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         dropOkay = isValidItem(entityType, material);
 
         if (entityType.equals(EntityType.SKELETON)) {
-            if (((Skeleton) entity).getSkeletonType().equals(SkeletonType.NORMAL)) {
-                if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
+            switch (((Skeleton) entity).getSkeletonType()) {
+                case NORMAL:
+                    if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
+                        return;
+                    }
+                    skullType = 0;
+                    break;
+                case WITHER:
+                    if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {
+                        return;
+                    }
+                    entityName = "Wither Skeleton";
+                    entityTypeName = "WITHER_SKELETON";
+                    skullType = 1;
+                    break;
+                default:
                     return;
-                }
-                skullType = 0;
-            } else {
-                return;
             }
         } else if (entityType.equals(EntityType.ZOMBIE)) {
             if (randomGenerator.nextInt(100) >= DROP_CHANCES.get(entityType.name())) {

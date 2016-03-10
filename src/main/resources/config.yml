@@ -235,7 +235,14 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_Wither
-    message: '&eThis head once belonged to a &dWither&e.'
+    message: '&eThis head once belonged to a &7Wither Boss&e.'
+  WitherSkeleton:
+    drop-chance: 100
+    items-required:
+    - ANY
+    - 276
+    skin: '@default'
+    message: '&eThis head once belonged to a &7Wither Skeleton&e.'    
   Witch:
     drop-chance: 100
     items-required:
