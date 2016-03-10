@@ -31,7 +31,7 @@ custom-heads:
     items-required:
       - ANY
       - 276
-    skin: MonkeyBatman
+    skin: bozzobrain
     message: '&eThis head once belonged to a &6Bat&e.'    
   Blaze:
     drop-chance: 100
