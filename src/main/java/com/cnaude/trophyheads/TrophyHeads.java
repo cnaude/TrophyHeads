@@ -461,18 +461,18 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 entityTypeName = "CAVE_SPIDER";
             } else if (monsterName.equalsIgnoreCase("Golem") || monsterName.equalsIgnoreCase("IronGolem")) {
                 entityTypeName = "IRON_GOLEM";
-            } else if (monsterName.equalsIgnoreCase("MushroomCow")) {
+            } else if (monsterName.equalsIgnoreCase("MushroomCow") || monsterName.equalsIgnoreCase("Mooshroom")) {
                 entityTypeName = "MUSHROOM_COW";
-            } else if (monsterName.equalsIgnoreCase("PigZombie")) {
+            } else if (monsterName.equalsIgnoreCase("PigZombie") || monsterName.equalsIgnoreCase("ZombiePigman")) {
                 entityTypeName = "PIG_ZOMBIE";
-            } else if (monsterName.equalsIgnoreCase("LavaSlime")) {
+            } else if (monsterName.equalsIgnoreCase("LavaSlime") || monsterName.equalsIgnoreCase("MagmaCube")) {
                 entityTypeName = "MAGMA_CUBE";
-            } else if (monsterName.equalsIgnoreCase("EnderDragon")) {
+            } else if (monsterName.equalsIgnoreCase("EnderDragon") || monsterName.equalsIgnoreCase("Dragon")) {
                 entityTypeName = "ENDER_DRAGON";
             } else if (monsterName.equalsIgnoreCase("ElderGuardian")) {
                 entityTypeName = "ELDER_GUARDIAN";
-            } else if (monsterName.equalsIgnoreCase("SnowMan")) {
-                entityTypeName = "SNOW_GOLEM";
+            } else if (monsterName.equalsIgnoreCase("SnowMan") || monsterName.equalsIgnoreCase("SnowGolem")) {
+                entityTypeName = "SNOWMAN";
             } else {
                 entityTypeName = monsterName;
             }
