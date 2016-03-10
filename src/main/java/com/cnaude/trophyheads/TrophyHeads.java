@@ -184,6 +184,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                     } else {
                         message = SKULL_MESSAGES.get(EntityType.PLAYER.toString());
                     }
+                } else if (skull.getSkullType().name().equalsIgnoreCase("Dragon")) {
+                    message = SKULL_MESSAGES.get(EntityType.ENDER_DRAGON.toString());
                 } else if (skull.getSkullType().toString().equals(SkullType.CREEPER.toString())) {
                     message = SKULL_MESSAGES.get(EntityType.CREEPER.toString());
                 } else if (skull.getSkullType().toString().equals(SkullType.SKELETON.toString())) {
