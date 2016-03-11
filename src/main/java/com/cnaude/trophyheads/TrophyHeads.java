@@ -3,8 +3,10 @@ package com.cnaude.trophyheads;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
@@ -61,6 +63,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static final CaseInsensitiveMap<String> SKULL_MESSAGES = new CaseInsensitiveMap<>();
     private static final ArrayList<String> INFO_BLACKLIST = new ArrayList<>();
     private static Material renameItem = Material.PAPER;
+    HashMap<UUID, Long> rightClickCoolDowns = new HashMap<>();
+    private final long cooldown = 20L;
 
     @Override
     public void onEnable() {
@@ -168,12 +172,10 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                                 player.sendMessage(nonTropyHeadMessage);
                                 return;
                             }
+                        } else if (CUSTOM_SKINS.containsValue(pName)) {
+                            message = SKULL_MESSAGES.get(getCustomSkullType(pName));
                         } else {
-                            if (CUSTOM_SKINS.containsValue(pName)) {
-                                message = SKULL_MESSAGES.get(getCustomSkullType(pName));
-                            } else {
-                                message = SKULL_MESSAGES.get(EntityType.PLAYER.name());
-                            }
+                            message = SKULL_MESSAGES.get(EntityType.PLAYER.name());
                         }
                     } else {
                         message = SKULL_MESSAGES.get(EntityType.PLAYER.toString());
@@ -199,12 +201,18 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 }
                 if (INFO_BLACKLIST.contains(pName.toLowerCase())) {
                     logDebug("Ignoring: " + pName);
-                } else {
-                    message = message.replace("%%NAME%%", pName);
-                    message = ChatColor.translateAlternateColorCodes('&', message);
-                    logDebug(message);
-                    player.sendMessage(message);
+                    return;
                 }
+                if (rightClickCoolDowns.containsKey(player.getUniqueId())) {
+                    if (rightClickCoolDowns.get(player.getUniqueId()) >= System.currentTimeMillis()) {
+                        return;
+                    }
+                }
+                message = message.replace("%%NAME%%", pName);
+                message = ChatColor.translateAlternateColorCodes('&', message);
+                logDebug(message);
+                player.sendMessage(message);
+                rightClickCoolDowns.put(player.getUniqueId(), System.currentTimeMillis() + cooldown);
             }
         }
     }
