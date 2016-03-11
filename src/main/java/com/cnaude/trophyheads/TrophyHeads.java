@@ -1,6 +1,7 @@
 package com.cnaude.trophyheads;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Guardian;
@@ -66,17 +68,16 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static Material renameItem = Material.PAPER;
     HashMap<UUID, Long> rightClickCoolDowns = new HashMap<>();
     private final long cooldown = 20L;
+    boolean configLoaded = false;
 
     @Override
     public void onEnable() {
         LOG_HEADER = "[" + this.getName() + "]";
         randomGenerator = new Random();
         pluginFolder = getDataFolder();
-        configFile = new File(pluginFolder, "config.yml");
-        createConfig();
-        this.getConfig().options().copyDefaults(true);
-        saveConfig();
-        loadConfig();
+        configFile = new File(pluginFolder, "config.yml");     
+        this.saveDefaultConfig();
+        loadTrophyConfig(this.getServer().getConsoleSender());
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("headspawn").setExecutor(new HeadSpawnCommand(this));
         getCommand("headgive").setExecutor(new HeadGiveCommand(this));
@@ -91,14 +92,6 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
     }
 
-    public void reloadMainConfig(CommandSender sender) {
-        reloadConfig();
-        getConfig().options().copyDefaults(false);
-        loadConfig();
-        sender.sendMessage(ChatColor.GOLD + "[TrophyHeads] "
-                + ChatColor.WHITE + "Configuration reloaded.");
-    }
-
     public String getCustomSkullType(String name) {
         for (String key : CUSTOM_SKINS.keySet()) {
             if (CUSTOM_SKINS.get(key).equalsIgnoreCase(name)) {
@@ -107,14 +100,14 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
         return EntityType.UNKNOWN.toString();
     }
-    
+
     public String getCustomSkullName(String type) {
         if (SKULL_NAMES.containsKey(type)) {
             return SKULL_NAMES.get(type);
         }
         return type;
     }
-    
+
     @EventHandler
     public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
         if (!renameEnabled) {
@@ -447,25 +440,15 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         world.dropItemNaturally(loc, item);
     }
 
-    private void createConfig() {
-        if (!pluginFolder.exists()) {
-            try {
-                pluginFolder.mkdir();
-            } catch (Exception e) {
-                logError(e.getMessage());
-            }
+    protected void loadTrophyConfig(CommandSender sender) {
+        if (!configLoaded) {
+            sender.sendMessage(ChatColor.GOLD + LOG_HEADER + " Configuration loaded.");
+        } else {
+            reloadConfig();
+            sender.sendMessage(ChatColor.GOLD + LOG_HEADER + " Configuration reloaded.");
         }
+        configLoaded = true;
 
-        if (!configFile.exists()) {
-            try {
-                configFile.createNewFile();
-            } catch (IOException e) {
-                logError(e.getMessage());
-            }
-        }
-    }
-
-    private void loadConfig() {
         debugEnabled = getConfig().getBoolean("debug-enabled");
         logDebug("Debug enabled");
 
@@ -531,7 +514,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
             SKULL_MESSAGES.put(entityTypeName, message);
             logDebug("  Message: " + SKULL_MESSAGES.get(entityTypeName));
-            
+
             SKULL_NAMES.put(entityTypeName, monsterName);
             logDebug("  Name: " + SKULL_NAMES.get(monsterName));
 

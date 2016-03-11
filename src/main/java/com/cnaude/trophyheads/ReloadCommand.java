@@ -20,7 +20,7 @@ public class ReloadCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender.hasPermission("trophyheads.reload")) {
-            plugin.reloadMainConfig(sender);
+            plugin.loadTrophyConfig(sender);
         } else {
             sender.sendMessage(ChatColor.RED + "You do not have permission to run this command.");
         }
