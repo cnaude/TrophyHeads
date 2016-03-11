@@ -61,6 +61,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static final CaseInsensitiveMap<Integer> DROP_CHANCES = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<String> CUSTOM_SKINS = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<String> SKULL_MESSAGES = new CaseInsensitiveMap<>();
+    private static final CaseInsensitiveMap<String> SKULL_NAMES = new CaseInsensitiveMap<>();
     private static final ArrayList<String> INFO_BLACKLIST = new ArrayList<>();
     private static Material renameItem = Material.PAPER;
     HashMap<UUID, Long> rightClickCoolDowns = new HashMap<>();
@@ -106,7 +107,14 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
         return EntityType.UNKNOWN.toString();
     }
-
+    
+    public String getCustomSkullName(String type) {
+        if (SKULL_NAMES.containsKey(type)) {
+            return SKULL_NAMES.get(type);
+        }
+        return type;
+    }
+    
     @EventHandler
     public void onPrepareItemCraftEvent(PrepareItemCraftEvent event) {
         if (!renameEnabled) {
@@ -331,7 +339,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                         ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (byte) 3);
                         ItemMeta itemMeta = item.getItemMeta();
                         ((SkullMeta) itemMeta).setOwner(pName);
-                        itemMeta.setDisplayName(ChatColor.GREEN + getCustomSkullType(pName) + " Head");
+                        itemMeta.setDisplayName(ChatColor.GREEN + getCustomSkullName(getCustomSkullType(pName)) + " Head");
                         item.setItemMeta(itemMeta);
 
                         World world = loc.getWorld();
@@ -523,6 +531,9 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
             SKULL_MESSAGES.put(entityTypeName, message);
             logDebug("  Message: " + SKULL_MESSAGES.get(entityTypeName));
+            
+            SKULL_NAMES.put(entityTypeName, monsterName);
+            logDebug("  Name: " + SKULL_NAMES.get(monsterName));
 
         }
 
