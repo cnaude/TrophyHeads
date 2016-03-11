@@ -1,8 +1,6 @@
 package com.cnaude.trophyheads;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +16,6 @@ import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Guardian;
@@ -75,7 +72,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         LOG_HEADER = "[" + this.getName() + "]";
         randomGenerator = new Random();
         pluginFolder = getDataFolder();
-        configFile = new File(pluginFolder, "config.yml");     
+        configFile = new File(pluginFolder, "config.yml");
         this.saveDefaultConfig();
         loadTrophyConfig(this.getServer().getConsoleSender());
         getServer().getPluginManager().registerEvents(this, this);
@@ -188,7 +185,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 } else if (skull.getSkullType().toString().equals(SkullType.SKELETON.toString())) {
                     message = SKULL_MESSAGES.get(EntityType.SKELETON.toString());
                 } else if (skull.getSkullType().toString().equals(SkullType.WITHER.toString())) {
-                    message = SKULL_MESSAGES.get(EntityType.WITHER.toString());
+                    message = SKULL_MESSAGES.get("WITHER_SKELETON");
                 } else if (skull.getSkullType().toString().equals(SkullType.ZOMBIE.toString())) {
                     message = SKULL_MESSAGES.get(EntityType.ZOMBIE.toString());
                 } else {
@@ -489,6 +486,8 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 entityTypeName = "ELDER_GUARDIAN";
             } else if (monsterName.equalsIgnoreCase("SnowMan") || monsterName.equalsIgnoreCase("SnowGolem")) {
                 entityTypeName = "SNOWMAN";
+            } else if (monsterName.equalsIgnoreCase("WitherSkeleton")) {
+                entityTypeName = "WITHER_SKELETON";
             } else {
                 entityTypeName = monsterName;
             }

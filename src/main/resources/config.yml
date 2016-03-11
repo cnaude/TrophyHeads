@@ -56,7 +56,7 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_Enderman
-    message: '&eThis head once belonged to a &0Enderman&e.'
+    message: '&eThis head once belonged to a &7Enderman&e.'
   Ghast:
     drop-chance: 100
     items-required:
@@ -210,7 +210,7 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_EnderDragon
-    message: '&eThis head once belonged to an &0Ender Dragon&e.'
+    message: '&eThis head once belonged to an &7Ender Dragon&e.'
   Snowman:
     drop-chance: 100
     items-required:
@@ -224,14 +224,14 @@ custom-heads:
     - ANY
     - 276
     skin: MHF_Wither
-    message: '&eThis head once belonged to a &0Wither Boss&e.'
+    message: '&eThis head once belonged to a &7Wither Boss&e.'
   WitherSkeleton:
     drop-chance: 100
     items-required:
     - ANY
     - 276
     skin: '@default'
-    message: '&eThis head once belonged to a &0Wither Skeleton&e.'
+    message: '&eThis head once belonged to a &7Wither Skeleton&e.'
   Witch:
     drop-chance: 100
     items-required:
