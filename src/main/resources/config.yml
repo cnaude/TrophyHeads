@@ -181,7 +181,7 @@ custom-heads:
     items-required:
     - ANY
     - 276
-    skin: ElderGuardian
+    skin: MHF_EGuardian
     message: '&eThis head once belonged to a &3Elder Guardian&e.'
   Endermite:
     drop-chance: 100
