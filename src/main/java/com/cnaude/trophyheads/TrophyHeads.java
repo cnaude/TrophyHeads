@@ -64,7 +64,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static final ArrayList<String> INFO_BLACKLIST = new ArrayList<>();
     private static Material renameItem = Material.PAPER;
     HashMap<UUID, Long> rightClickCoolDowns = new HashMap<>();
-    private final long cooldown = 20L;
+    private long cooldown = 40L;
     boolean configLoaded = false;
 
     @Override
@@ -448,6 +448,9 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
         debugEnabled = getConfig().getBoolean("debug-enabled");
         logDebug("Debug enabled");
+        
+        cooldown = getConfig().getLong("right-click-cooldown", 40L);
+        logDebug("Cooldown: " + cooldown);
 
         DROP_CHANCES.put(EntityType.PLAYER.toString(), getConfig().getInt("drop-chance"));
         logDebug("Chance to drop head: " + DROP_CHANCES.get(EntityType.PLAYER.toString()) + "%");

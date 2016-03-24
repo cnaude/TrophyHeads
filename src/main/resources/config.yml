@@ -12,6 +12,7 @@ items-required:
 message: '&eThis head once belonged to &c%%NAME%%&e.'
 non-th-message: '&eThat is a Custom head!'
 debug-enabled: false
+right-click-cooldown: 40
 info-blacklist:
 - IGNOREDUSER
 custom-heads:
