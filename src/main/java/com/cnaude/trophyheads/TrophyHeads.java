@@ -167,7 +167,13 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                         logDebug("Skull owner: " + pName);
                         if (pName == null) {
                             if (!nonTropyHeadMessage.isEmpty()) {
+                                if (rightClickCoolDowns.containsKey(player.getUniqueId())) {
+                                    if (rightClickCoolDowns.get(player.getUniqueId()) >= System.currentTimeMillis()) {
+                                        return;
+                                    }
+                                }
                                 player.sendMessage(nonTropyHeadMessage);
+                                rightClickCoolDowns.put(player.getUniqueId(), System.currentTimeMillis() + cooldown);
                                 return;
                             }
                         } else if (CUSTOM_SKINS.containsValue(pName)) {
@@ -448,7 +454,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
         debugEnabled = getConfig().getBoolean("debug-enabled");
         logDebug("Debug enabled");
-        
+
         cooldown = getConfig().getLong("right-click-cooldown", 40L);
         logDebug("Cooldown: " + cooldown);
 
