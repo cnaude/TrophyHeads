@@ -39,6 +39,9 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
+import com.mojang.authlib.properties.Property;
+import com.mojang.authlib.GameProfile;
+import java.lang.reflect.Field;
 
 /**
  *
@@ -59,6 +62,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
     private static final CaseInsensitiveMap<List<String>> ITEMS_REQUIRED = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<Integer> DROP_CHANCES = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<String> CUSTOM_SKINS = new CaseInsensitiveMap<>();
+    private static final CaseInsensitiveMap<String> CUSTOM_TEXTURES = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<String> SKULL_MESSAGES = new CaseInsensitiveMap<>();
     private static final CaseInsensitiveMap<String> SKULL_NAMES = new CaseInsensitiveMap<>();
     private static final ArrayList<String> INFO_BLACKLIST = new ArrayList<>();
@@ -349,7 +353,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onEntityDeathEvent(EntityDeathEvent event) {
-        Player player;
+        Player player = null;
         EntityType entityType = event.getEntityType();
         Entity entity = event.getEntity();
         String entityName = entity.getName();
@@ -424,9 +428,13 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 entityTypeName = "ELDER_GUARDIAN";
             }
         }
-        if (skullType == 3 || CUSTOM_SKINS.containsKey(entityName)) {
+        if (skullType == 3 || CUSTOM_SKINS.containsKey(entityName) || CUSTOM_TEXTURES.containsKey(entityName)) {
             logDebug("Dropping: [skin: " + CUSTOM_SKINS.get(entityTypeName) + "] [etName: " + entityName + "] [etType: " + entityTypeName + "]");
-            if (CUSTOM_SKINS.containsKey(entityTypeName)) {
+            if (CUSTOM_TEXTURES.containsKey(entityTypeName)) {
+                if (!CUSTOM_TEXTURES.get(entityTypeName).isEmpty() && player != null) {
+                    item = getSkull(CUSTOM_TEXTURES.get(entityTypeName), entityName);
+                }
+            } else if (CUSTOM_SKINS.containsKey(entityTypeName)) {
                 if (!CUSTOM_SKINS.get(entityTypeName).equalsIgnoreCase("@default")) {
                     ItemMeta itemMeta = item.getItemMeta();
                     ((SkullMeta) itemMeta).setOwner(CUSTOM_SKINS.get(entityTypeName));
@@ -509,6 +517,7 @@ public class TrophyHeads extends JavaPlugin implements Listener {
                 items.add("276");
             }
             String skin = getConfig().getString("custom-heads." + monsterName + ".skin", "MHF_" + monsterName);
+            String texture = getConfig().getString("custom-heads." + monsterName + ".texture", "");
             String message = getConfig().getString("custom-heads." + monsterName + ".message", "&eThis head once belonged to a &e" + monsterName + "&e.");
 
             DROP_CHANCES.put(entityTypeName, dropChance);
@@ -519,6 +528,9 @@ public class TrophyHeads extends JavaPlugin implements Listener {
 
             CUSTOM_SKINS.put(entityTypeName, skin);
             logDebug("  Skin: " + CUSTOM_SKINS.get(entityTypeName));
+
+            CUSTOM_TEXTURES.put(entityTypeName, texture);
+            logDebug("  Texture: " + CUSTOM_TEXTURES.get(entityTypeName));
 
             SKULL_MESSAGES.put(entityTypeName, message);
             logDebug("  Message: " + SKULL_MESSAGES.get(entityTypeName));
@@ -561,4 +573,28 @@ public class TrophyHeads extends JavaPlugin implements Listener {
             LOG.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, _message));
         }
     }
+
+    public static ItemStack getSkull(String encodedData, String name) {
+        ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+
+        ItemMeta headMeta = head.getItemMeta();
+        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        profile.getProperties().put("textures", new Property("textures", encodedData));
+        headMeta.setDisplayName(name + " Head");
+        Field profileField = null;
+        try {
+            profileField = headMeta.getClass().getDeclaredField("profile");
+        } catch (NoSuchFieldException | SecurityException e) {
+            e.printStackTrace();
+        }
+        profileField.setAccessible(true);
+        try {
+            profileField.set(headMeta, profile);
+        } catch (IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        head.setItemMeta(headMeta);
+        return head;
+    }
+
 }

@@ -47,6 +47,14 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>spigot-111</artifactId>
+            <version>1.11</version>
+            <type>jar</type>
+            <scope>provided</scope>
+        </dependency>
 
         <!-- Following dependency is provided by CraftBukkit -->
         <dependency>
