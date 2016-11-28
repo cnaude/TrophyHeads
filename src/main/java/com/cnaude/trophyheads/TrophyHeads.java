@@ -574,24 +574,25 @@ public class TrophyHeads extends JavaPlugin implements Listener {
         }
     }
 
-    public static ItemStack getSkull(String encodedData, String name) {
+    public ItemStack getSkull(String encodedData, String name) {
         ItemStack head = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
 
         ItemMeta headMeta = head.getItemMeta();
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
         profile.getProperties().put("textures", new Property("textures", encodedData));
         headMeta.setDisplayName(name + " Head");
-        Field profileField = null;
+        Field profileField;
         try {
             profileField = headMeta.getClass().getDeclaredField("profile");
         } catch (NoSuchFieldException | SecurityException e) {
-            e.printStackTrace();
+            logError(e.getMessage());
+            return head;
         }
         profileField.setAccessible(true);
         try {
             profileField.set(headMeta, profile);
         } catch (IllegalArgumentException | IllegalAccessException e) {
-            e.printStackTrace();
+            logError(e.getMessage());
         }
         head.setItemMeta(headMeta);
         return head;
