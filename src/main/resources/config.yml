@@ -2,7 +2,7 @@
 player-skin: true
 rename-enabled: false
 rename-item: 339
-drop-chance: 100
+drop-chance: 5
 death-types:
 - PVP
 - ALL
@@ -17,42 +17,42 @@ info-blacklist:
 - IGNOREDUSER
 custom-heads:
   Bat:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: bozzobrain
     message: '&eThis head once belonged to a &8Bat&e.'
   Blaze:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Blaze
     message: '&eThis head once belonged to a &eBlaze&e.'
   CaveSpider:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_CaveSpider
     message: '&eThis head once belonged to a &8Cave Spider&e.'
   Chicken:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Chicken
     message: '&eThis head once belonged to a &fChicken&e.'
   Cow:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Cow
     message: '&eThis head once belonged to a &8Cow&e.'
   Enderman:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
@@ -66,189 +66,189 @@ custom-heads:
     skin: MHF_Ghast
     message: '&eThis head once belonged to a &fGhast&e.'
   IronGolem:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Golem
     message: '&eThis head once belonged to an &7Iron Golem&e.'
   LavaSlime:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_LavaSlime
     message: '&eThis head once belonged to a &4Magma Cube&e.'
   MushroomCow:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_MushroomCow
     message: '&eThis head once belonged to a &4Mooshroom Cow&e.'
   Ocelot:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Ocelot
     message: '&eThis head once belonged to a &6Ocelot&e.'
   Pig:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Pig
     message: '&eThis head once belonged to a &cPig&e.'
   PigZombie:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_PigZombie
     message: '&eThis head once belonged to a &dPigZombie&e.'
   Sheep:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Sheep
     message: '&eThis head once belonged to a &fSheep&e.'
   Slime:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Slime
     message: '&eThis head once belonged to a &2Slime&e.'
   Spider:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Spider
     message: '&eThis head once belonged to a &8Spider&e.'
   Squid:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Squid
     message: '&eThis head once belonged to a &9Squid&e.'
   Shulker:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: shulker_ninja
     message: '&eThis head once belonged to a &5Shulker&e.'
   Villager:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Villager
     message: '&eThis head once belonged to a &cVillager&e.'
   Zombie:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to a hungry &2Zombie&e.'
   Skeleton:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to a &fSkeleton&e.'
   Creeper:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to an angry &aCreeper&e.'
   Guardian:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Guardian
     message: '&eThis head once belonged to a &3Guardian&e.'
   ElderGuardian:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_EGuardian
     message: '&eThis head once belonged to a &3Elder Guardian&e.'
   Endermite:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Endermite
     message: '&eThis head once belonged to a &5Endermite&e.'
   Rabbit:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Bunny
     message: '&eThis head once belonged to a &fRabbit&e.'
   Wolf:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Wolf
     message: '&eThis head once belonged to a &7Wolf&e.'
   Enderdragon:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_EnderDragon
     message: '&eThis head once belonged to an &7Ender Dragon&e.'
   Snowman:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_SnowGolem
     message: '&eThis head once belonged to an &fSnow Golem&e.'
   Wither:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Wither
     message: '&eThis head once belonged to a &7Wither Boss&e.'
   WitherSkeleton:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: '@default'
     message: '&eThis head once belonged to a &7Wither Skeleton&e.'
   Witch:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: MHF_Witch
     message: '&eThis head once belonged to an &5Witch&e.'
   Horse:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
     skin: KinkyHorseLover
     message: '&eThis head once belonged to a &4Horse&e.'
   Silverfish:
-    drop-chance: 100
+    drop-chance: 5
     items-required:
     - ANY
     - 276
